@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
+import MainLayout from "@/components/layouts/MainLayout";
 import axios, { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -17,6 +18,7 @@ type TransactionDetailResponse = {
 };
 
 const TransactionDetail = () => {
+  const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [donation, setDonation] = useState<TransactionDetailResponse>();
   const router = useRouter();
 
@@ -34,11 +36,15 @@ const TransactionDetail = () => {
           `${process.env.NEXT_PUBLIC_BACKEND_URL}/transactions/${router.query.transactionId}`
         )
       ).data as TransactionDetailResponse;
+
+      if (new Date().getTime() >= res.expired_at) {
+        throw new Error("Transaction expired");
+      }
+
       setDonation(res);
-      console.log(res);
+      setIsLoaded(true);
     } catch (error) {
       if (error instanceof AxiosError) {
-        console.error(error);
         Swal.fire({
           icon: "error",
           title: error.message,
@@ -62,31 +68,47 @@ const TransactionDetail = () => {
     return "";
   };
 
+  const formatAmount = (): string => {
+    if (donation) {
+      return new Intl.NumberFormat().format(donation.amount);
+    }
+    return "";
+  };
+
   return (
-    <div className="p-5">
-      {donation?.qris && (
-        <>
-          <img src={donation.qris} alt="QRIS" className="mx-auto" />
-          <p className="text-center">
-            Scan QRCODE di atas dengan E-Wallet atau Mobile Bank kalian yang
-            mendukung QRIS
-          </p>
-        </>
-      )}
-      {donation?.virtual_account && (
-        <>
-          <p className="text-center">
-            <span>Bank: </span>
-            <span className="uppercase">{donation.virtual_account.bank}</span>
-          </p>
-          <p className="text-center">
-            <span>Virtual Account: </span>
-            <span className="font-bold">{donation.virtual_account.number}</span>
-          </p>
-        </>
-      )}
-      <p className="text-center">Bayar sebelum: {formatDate()}</p>
-    </div>
+    <MainLayout>
+      <div className={`p-5 ${!isLoaded && "hidden"}`}>
+        {donation?.qris && (
+          <>
+            <img
+              src={donation.qris}
+              alt="QRIS"
+              className="mx-auto w-full md:w-1/2"
+            />
+            <p className="text-center">
+              Scan QRCODE di atas dengan E-Wallet atau Mobile Bank kalian yang
+              mendukung QRIS
+            </p>
+          </>
+        )}
+        {donation?.virtual_account && (
+          <>
+            <p className="text-center">
+              <span>Bank: </span>
+              <span className="uppercase">{donation.virtual_account.bank}</span>
+            </p>
+            <p className="text-center">
+              <span>Virtual Account: </span>
+              <span className="font-bold">
+                {donation.virtual_account.number}
+              </span>
+            </p>
+          </>
+        )}
+        <p className="text-center font-bold">Nominal Rp {formatAmount()}</p>
+        <p className="text-center">Bayar sebelum: {formatDate()}</p>
+      </div>
+    </MainLayout>
   );
 };
 

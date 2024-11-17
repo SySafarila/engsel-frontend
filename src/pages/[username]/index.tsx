@@ -1,3 +1,4 @@
+import MainLayout from "@/components/layouts/MainLayout";
 import axios, { AxiosError } from "axios";
 import { GetStaticPaths } from "next";
 import { useRouter } from "next/router";
@@ -39,8 +40,9 @@ export default function User({ user }: { user: User }) {
     if (isSending === true) {
       return;
     }
+
     setIsSending(true);
-    console.log(data);
+
     const requestBody: RequiredRequest = {
       amount: parseInt(data.amount!),
       donator_name: data.donator_name!,
@@ -48,16 +50,19 @@ export default function User({ user }: { user: User }) {
       message: data.message!,
       payment_method: data.payment_method!,
     };
+
     try {
       const res = await axios.post(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/${user.username}/donate`,
         requestBody
       );
-      console.log(res);
+
       setIsSending(false);
+
       router.push(`/transactions/${res.data.transaction_id}`);
     } catch (error: unknown) {
       setIsSending(false);
+
       if (error instanceof AxiosError) {
         console.error(error);
         Swal.fire({
@@ -69,90 +74,92 @@ export default function User({ user }: { user: User }) {
   };
 
   return (
-    <div className="p-5">
-      <p className="text-center font-bold text-2xl mb-4">
-        Send donation to {user.username}
-      </p>
-      <form
-        className="grid grid-cols-1 md:grid-cols-2 gap-3"
-        onSubmit={handleSubmit(sendRequest)}
-      >
-        <div className="grid grid-cols-1 gap-1 md:col-span-2">
-          <label htmlFor="amount">Nominal (Rp)</label>
-          <input
-            required
-            type="number"
-            className="border py-2 px-3"
-            id="amount"
-            placeholder="Nominal"
-            {...register("amount", { required: true })}
-          />
-        </div>
-        <div className="grid grid-cols-1 gap-1">
-          <label htmlFor="donator_name">Nama Pengirim</label>
-          <input
-            required
-            type="text"
-            className="border py-2 px-3"
-            id="donator_name"
-            placeholder="Dari Syahrul"
-            {...register("donator_name", { required: true })}
-          />
-        </div>
-        <div className="grid grid-cols-1 gap-1">
-          <label htmlFor="donator_email">Email Pengirim</label>
-          <input
-            required
-            type="email"
-            className="border py-2 px-3"
-            id="donator_email"
-            placeholder="mail@mail.com"
-            {...register("donator_email", { required: true })}
-          />
-        </div>
-        <div className="grid grid-cols-1 gap-1 md:col-span-2">
-          <label htmlFor="message">Pesan</label>
-          <textarea
-            id="message"
-            placeholder="Pesan"
-            className="border py-2 px-3"
-            {...register("message", { required: true })}
-          ></textarea>
-        </div>
-        <div className="grid grid-cols-1 gap-1 md:col-span-2">
-          <label htmlFor="payment_method">Metode Pembayaran</label>
-          <div className="flex items-center gap-2">
+    <MainLayout>
+      <div className="p-5">
+        <p className="text-center font-bold text-2xl mb-4">
+          Send donation to {user.username}
+        </p>
+        <form
+          className="grid grid-cols-1 md:grid-cols-2 gap-3"
+          onSubmit={handleSubmit(sendRequest)}
+        >
+          <div className="grid grid-cols-1 gap-1 md:col-span-2">
+            <label htmlFor="amount">Nominal (Rp)</label>
             <input
               required
-              type="radio"
-              id="payment_method_qris"
-              value="qris"
-              {...register("payment_method", { required: true })}
+              type="number"
+              className="border py-2 px-3"
+              id="amount"
+              placeholder="Nominal"
+              {...register("amount", { required: true })}
             />
-            <label htmlFor="payment_method_qris">QRIS</label>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="grid grid-cols-1 gap-1">
+            <label htmlFor="donator_name">Nama Pengirim</label>
             <input
               required
-              type="radio"
-              id="payment_method_bca_va"
-              value="bca-virtual-account"
-              {...register("payment_method", { required: true })}
+              type="text"
+              className="border py-2 px-3"
+              id="donator_name"
+              placeholder="Dari Syahrul"
+              {...register("donator_name", { required: true })}
             />
-            <label htmlFor="payment_method_bca_va">BCA Virtual Account</label>
           </div>
-        </div>
-        <div>
-          <button
-            className="bg-green-500 hover:bg-green-600 px-3 py-2 text-white disabled:bg-gray-200 disabled:text-black"
-            type="submit"
-            disabled={isSending}
-          >
-            {isSending ? "Loading..." : "Kirim"}
-          </button>
-        </div>
-      </form>
-    </div>
+          <div className="grid grid-cols-1 gap-1">
+            <label htmlFor="donator_email">Email Pengirim</label>
+            <input
+              required
+              type="email"
+              className="border py-2 px-3"
+              id="donator_email"
+              placeholder="mail@mail.com"
+              {...register("donator_email", { required: true })}
+            />
+          </div>
+          <div className="grid grid-cols-1 gap-1 md:col-span-2">
+            <label htmlFor="message">Pesan</label>
+            <textarea
+              id="message"
+              placeholder="Pesan"
+              className="border py-2 px-3"
+              {...register("message", { required: true })}
+            ></textarea>
+          </div>
+          <div className="grid grid-cols-1 gap-1 md:col-span-2">
+            <label htmlFor="payment_method">Metode Pembayaran</label>
+            <div className="flex items-center gap-2">
+              <input
+                required
+                type="radio"
+                id="payment_method_qris"
+                value="qris"
+                {...register("payment_method", { required: true })}
+              />
+              <label htmlFor="payment_method_qris">QRIS</label>
+            </div>
+            <div className="flex items-center gap-2">
+              <input
+                required
+                type="radio"
+                id="payment_method_bca_va"
+                value="bca-virtual-account"
+                {...register("payment_method", { required: true })}
+              />
+              <label htmlFor="payment_method_bca_va">BCA Virtual Account</label>
+            </div>
+          </div>
+          <div>
+            <button
+              className="bg-green-500 hover:bg-green-600 px-3 py-2 text-white disabled:bg-gray-200 disabled:text-black"
+              type="submit"
+              disabled={isSending}
+            >
+              {isSending ? "Loading..." : "Kirim"}
+            </button>
+          </div>
+        </form>
+      </div>
+    </MainLayout>
   );
 }
 

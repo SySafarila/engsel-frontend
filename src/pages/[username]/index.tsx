@@ -164,19 +164,29 @@ export default function User({ user }: { user: User }) {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const users: Users = (
-    await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/users`)
-  ).data;
-  const paths = users.user.map((user: User) => ({
-    params: {
-      username: String(user.username),
-    },
-  }));
+  try {
+    const users: Users = (
+      await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/users`)
+    ).data;
+    const paths = users.user.map((user: User) => ({
+      params: {
+        username: String(user.username),
+      },
+    }));
 
-  // We'll prerender only these paths at build time.
-  // { fallback: 'blocking' } will server-render pages
-  // on-demand if the path doesn't exist.
-  return { paths, fallback: false };
+    // We'll prerender only these paths at build time.
+    // { fallback: 'blocking' } will server-render pages
+    // on-demand if the path doesn't exist.
+    return { paths, fallback: "blocking" };
+  } catch {
+    const paths: {
+      params: {
+        username: string;
+      };
+    }[] = [];
+
+    return { paths, fallback: "blocking" };
+  }
 };
 
 export const getStaticProps = async ({
@@ -189,7 +199,6 @@ export const getStaticProps = async ({
       `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/${params.username}`
     );
     user = user.data.user;
-    console.log(user);
 
     return {
       props: {

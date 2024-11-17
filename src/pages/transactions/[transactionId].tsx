@@ -3,6 +3,7 @@ import MainLayout from "@/components/layouts/MainLayout";
 import axios, { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { io } from "socket.io-client";
 import Swal from "sweetalert2";
 
 type TransactionDetailResponse = {
@@ -15,19 +16,59 @@ type TransactionDetailResponse = {
     bank: string;
     number: string;
   };
+  is_paid: boolean;
 };
 
 const TransactionDetail = () => {
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [donation, setDonation] = useState<TransactionDetailResponse>();
   const router = useRouter();
+  const socket = io("ws://localhost:3030", {
+    autoConnect: false,
+  });
 
   useEffect(() => {
     if (router.isReady) {
       getDetailTransaction();
+
+      socket.connect();
+
+      socketIO();
+
+      return () => {
+        if (socket.connected == true) {
+          socket.disconnect();
+          console.log("Disconnect from realtime notification");
+        }
+      };
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router.isReady]);
+  }, [router]);
+
+  const socketIO = () => {
+    socket.connect();
+
+    socket.on("connect", () => {
+      console.log("Connected to realtime notification");
+      socket.emit("join", router.query.transactionId);
+    });
+
+    socket.on("join", (message) => {
+      console.log(message);
+    });
+
+    socket.on("transaction-settlement", () => {
+      Swal.fire({
+        icon: "success",
+        title: "Sukses",
+        text: "Transaksi berhasil",
+      });
+    });
+
+    socket.on("disconnect", () => {
+      // socket.connect();
+    });
+  };
 
   const getDetailTransaction = async () => {
     try {
@@ -43,6 +84,14 @@ const TransactionDetail = () => {
 
       setDonation(res);
       setIsLoaded(true);
+
+      if (res.is_paid === true) {
+        Swal.fire({
+          icon: "success",
+          title: "Sukses",
+          text: "Transaksi berhasil",
+        });
+      }
     } catch (error) {
       if (error instanceof AxiosError) {
         Swal.fire({
@@ -106,7 +155,12 @@ const TransactionDetail = () => {
           </>
         )}
         <p className="text-center font-bold">Nominal Rp {formatAmount()}</p>
-        <p className="text-center">Bayar sebelum: {formatDate()}</p>
+        {donation?.is_paid == false && (
+          <p className="text-center">Bayar sebelum: {formatDate()}</p>
+        )}
+        {donation?.is_paid == true && (
+          <p className="text-center">Transaksi telah dibayar</p>
+        )}
       </div>
     </MainLayout>
   );

@@ -1,4 +1,4 @@
-import MainLayout from "@/components/layouts/MainLayout";
+import GuestMainLayout from "@/components/layouts/GuestMainLayout";
 import axios, { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -48,7 +48,7 @@ const Register = () => {
   };
 
   return (
-    <MainLayout>
+    <GuestMainLayout>
       <form
         className="p-5 grid grid-cols-1 md:grid-cols-2 gap-3"
         onSubmit={handleSubmit(onSubmit)}
@@ -108,7 +108,7 @@ const Register = () => {
           </button>
         </div>
       </form>
-    </MainLayout>
+    </GuestMainLayout>
   );
 };
 

@@ -1,4 +1,4 @@
-import MainLayout from "@/components/layouts/MainLayout";
+import GuestMainLayout from "@/components/layouts/GuestMainLayout";
 import axios, { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -33,21 +33,21 @@ const Login = () => {
         icon: "success",
         title: "Sukses",
       }).then(() => {
-        router.push("/");
+        router.push("/dashboard");
       });
     } catch (error) {
       setIsSending(false);
       if (error instanceof AxiosError) {
         Swal.fire({
           icon: "error",
-          text: error.response?.data.message,
+          text: error.response?.data.message ?? error.message,
         });
       }
     }
   };
 
   return (
-    <MainLayout>
+    <GuestMainLayout>
       <form
         className="p-5 grid grid-cols-1 md:grid-cols-2 gap-3"
         onSubmit={handleSubmit(onSubmit)}
@@ -85,7 +85,7 @@ const Login = () => {
           </button>
         </div>
       </form>
-    </MainLayout>
+    </GuestMainLayout>
   );
 };
 

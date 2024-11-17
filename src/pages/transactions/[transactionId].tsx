@@ -23,38 +23,33 @@ const TransactionDetail = () => {
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [donation, setDonation] = useState<TransactionDetailResponse>();
   const router = useRouter();
-  const socket = io("ws://localhost:3030", {
+  const socket = io("ws://localhost:3030/transactions", {
     autoConnect: false,
   });
 
   useEffect(() => {
     if (router.isReady) {
       getDetailTransaction();
-
-      socket.connect();
-
-      socketIO();
-
-      return () => {
-        if (socket.connected == true) {
-          socket.disconnect();
-          console.log("Disconnect from realtime notification");
-        }
-      };
     }
+    return () => {
+      socket.disconnect();
+      socket.off("connect");
+      socket.off("join");
+      socket.off("transaction-settlement");
+      socket.off("disconnect");
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router]);
+  }, [router.isReady]);
 
   const socketIO = () => {
     socket.connect();
 
     socket.on("connect", () => {
-      console.log("Connected to realtime notification");
       socket.emit("join", router.query.transactionId);
     });
 
-    socket.on("join", (message) => {
-      console.log(message);
+    socket.on("join", () => {
+      console.log("Connected to realtime notification");
     });
 
     socket.on("transaction-settlement", () => {
@@ -66,7 +61,7 @@ const TransactionDetail = () => {
     });
 
     socket.on("disconnect", () => {
-      // socket.connect();
+      console.log("Disconnected from realtime notification");
     });
   };
 
@@ -91,6 +86,8 @@ const TransactionDetail = () => {
           title: "Sukses",
           text: "Transaksi berhasil",
         });
+      } else {
+        socketIO();
       }
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -98,6 +95,15 @@ const TransactionDetail = () => {
           icon: "error",
           title: error.message,
           text: error.response?.data.message ?? "",
+          allowEscapeKey: false,
+          allowEnterKey: false,
+          allowOutsideClick: false,
+          showConfirmButton: false,
+        });
+      } else if (error instanceof Error) {
+        Swal.fire({
+          icon: "error",
+          title: error.message,
           allowEscapeKey: false,
           allowEnterKey: false,
           allowOutsideClick: false,

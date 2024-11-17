@@ -1,11 +1,13 @@
 import MainLayout from "@/components/layouts/MainLayout";
 import axios, { AxiosError } from "axios";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 
 const Login = () => {
   const [isSending, setIsSending] = useState<boolean>(false);
+  const router = useRouter();
 
   const { register, handleSubmit } = useForm();
 
@@ -24,9 +26,14 @@ const Login = () => {
       );
       console.log(res);
       setIsSending(false);
+      await axios.post("/api/save-login", {
+        access_token: res.data.token,
+      });
       await Swal.fire({
         icon: "success",
         title: "Sukses",
+      }).then(() => {
+        router.push("/");
       });
     } catch (error) {
       setIsSending(false);

@@ -11,7 +11,7 @@ const Formula1 = () => {
 
   useEffect(() => {
     if (router.isReady) {
-      const q = new Queue();
+      const queue = new Queue();
 
       socket.connect();
 
@@ -19,7 +19,7 @@ const Formula1 = () => {
         socket.emit("join", router.query.streamkey);
       });
 
-      socket.on("donation", q.incomingDonation);
+      socket.on("donation", queue.incomingDonation);
     }
 
     return () => {
@@ -30,12 +30,15 @@ const Formula1 = () => {
   }, [router.isReady]);
 
   return (
-    <div className="border border-black p-3 bg-[#faae2b] m-2">
+    <div
+      className="border border-black p-3 bg-[#faae2b] m-2 hidden"
+      id="donation"
+    >
       <p className="text-center">
         <span id="donatorName" className="font-semibold text-[#744fc9]">
           Syahrul
         </span>{" "}
-        baru saja memberikan{" "}
+        <span id="templateText">baru saja memberikan </span>
         <span className="font-semibold text-[#744fc9]" id="amount">
           Rp 20,000
         </span>

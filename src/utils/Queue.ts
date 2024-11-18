@@ -1,3 +1,4 @@
+import Dom from "./Dom";
 import Sound from "./Sound";
 
 type Donation = {
@@ -14,6 +15,7 @@ export default class Queue {
   private isPlaying: boolean = false;
   private queue: Donation[] = [];
   private sound = new Sound();
+  private DOM = new Dom();
 
   constructor() {
     console.log("Queue init");
@@ -40,14 +42,18 @@ export default class Queue {
 
     this.isPlaying = true;
 
-    try {
-      await this.sound.playCashRegister();
-    } catch {
-      console.log("Fail to play cash register sound");
-    }
+    this.DOM.format({
+      amount: `Rp ${this.numberFormat(this.getDonation().amount)}`,
+      donatorName: this.getDonation().donator.name,
+      message: this.getDonation().message,
+      templateText: "baru saja memberikan ",
+    });
+    this.DOM.showDonation();
 
+    await this.sound.playSound("cash");
     await this.addDelay(5000);
 
+    this.DOM.hideDonation();
     this.deletePlayedQueue();
 
     if (this.queue.length >= 1) {

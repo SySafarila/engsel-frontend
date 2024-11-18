@@ -30,6 +30,7 @@ const Navbar = ({ authenticated = false }: { authenticated: boolean }) => {
         {authenticated === true && (
           <>
             <Link href="/dashboard">Dashboard</Link>
+            <Link href="/dashboard/donations">Donations</Link>
             <span onClick={logout} className="cursor-pointer">
               Logout
             </span>

@@ -20,7 +20,9 @@ const Register = () => {
     if (isSending === true) {
       return;
     }
+
     setIsSending(true);
+
     try {
       await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/register`, {
         email: data.email,
@@ -28,7 +30,9 @@ const Register = () => {
         name: data.name,
         username: data.username,
       });
+
       setIsSending(false);
+
       Swal.fire({
         icon: "success",
         title: "Sukses",
@@ -38,6 +42,7 @@ const Register = () => {
       });
     } catch (error) {
       setIsSending(false);
+
       if (error instanceof AxiosError) {
         Swal.fire({
           icon: "error",

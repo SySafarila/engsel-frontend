@@ -1,7 +1,5 @@
 import MainLayout from "@/components/layouts/MainLayout";
-import { accessTokenAtom } from "@/utils/state";
 import axios from "axios";
-import { useAtomValue } from "jotai";
 import { useEffect, useState } from "react";
 
 type Donations = {
@@ -16,23 +14,18 @@ type Donations = {
 
 const Donations = () => {
   const [donations, setDonations] = useState<Donations[]>([]);
-  const accessToken = useAtomValue(accessTokenAtom);
 
   useEffect(() => {
-    if (accessToken) {
-      getDonations();
-    }
+    getDonations();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [accessToken]);
+  }, []);
 
   const getDonations = async () => {
     try {
       const res = await axios.get(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/donations`,
         {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
+          withCredentials: true,
         }
       );
       setDonations(res.data.donations);
@@ -53,14 +46,29 @@ const Donations = () => {
     return new Intl.NumberFormat().format(amount);
   };
 
+  const replayDonation = async (transactionId: string) => {
+    console.log(transactionId);
+  };
+
   return (
     <MainLayout>
       <div className="p-5">
         <p>Donations</p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-5">
-          {donations.map((donation, index) => (
-            <div key={index} className="bg-gray-100 p-3 border">
-              <p>Dari: {donation.donator_name}</p>
+          {donations.map((donation) => (
+            <div key={donation.id} className="bg-gray-100 p-3 border">
+              <div className="flex justify-between gap-2">
+                <p className="w-full break-all">
+                  Dari: {donation.donator_name}
+                </p>
+                <small
+                  className="cursor-pointer"
+                  onClick={() => replayDonation(donation.id)}
+                >
+                  Replay
+                </small>
+              </div>
+              <small>Email: {donation.donator_email ?? "-"}</small>
               <p>Rp {rupiahFormat(donation.amount)}</p>
               <p>&quot;{donation.message}&quot;</p>
               <small>{formatDate(donation.updated_at)}</small>

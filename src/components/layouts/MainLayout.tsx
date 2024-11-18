@@ -1,4 +1,4 @@
-import { accessTokenAtom, isAuthAtom, userAtom } from "@/utils/state";
+import { isAuthAtom, userAtom } from "@/utils/state";
 import axios from "axios";
 import { useAtom } from "jotai";
 import React, { useEffect } from "react";
@@ -7,7 +7,6 @@ import Navbar from "../Navbar";
 const MainLayout = ({ children }: { children: React.ReactNode }) => {
   const [isAuth, setIsAuth] = useAtom(isAuthAtom);
   const [, setUser] = useAtom(userAtom);
-  const [, setAccessToken] = useAtom(accessTokenAtom);
 
   useEffect(() => {
     getCurrentUser();
@@ -19,19 +18,10 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
       return;
     }
     try {
-      const getAccessToken = await axios.get("/api/get-access-token");
-      const accessToken = getAccessToken.data.access_token;
-
-      if (!accessToken) {
-        throw new Error("access token not set");
-      }
-
       const res = await axios.get(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/me`,
         {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
+          withCredentials: true,
         }
       );
 
@@ -40,7 +30,6 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
         email: res.data.user.email,
         name: res.data.user.name,
       });
-      setAccessToken(accessToken);
     } catch {
       setIsAuth(false);
     }
@@ -48,7 +37,7 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <>
-      <Navbar authenticated={isAuth} />
+      <Navbar authenticated={true} />
       <div className="max-w-screen-md mx-auto">{children}</div>
     </>
   );

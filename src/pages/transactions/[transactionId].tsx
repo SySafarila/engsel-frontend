@@ -58,6 +58,7 @@ const TransactionDetail = () => {
         title: "Sukses",
         text: "Transaksi berhasil",
       });
+      router.reload();
     });
 
     socket.on("disconnect", () => {

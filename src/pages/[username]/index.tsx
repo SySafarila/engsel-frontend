@@ -1,4 +1,4 @@
-import MainLayout from "@/components/layouts/MainLayout";
+import GuestMainLayout from "@/components/layouts/GuestMainLayout";
 import axios, { AxiosError } from "axios";
 import { GetStaticPaths } from "next";
 import { useRouter } from "next/router";
@@ -110,7 +110,7 @@ export default function User({ user }: { user: User }) {
   };
 
   return (
-    <MainLayout>
+    <GuestMainLayout>
       <div className="p-5">
         <p className="text-center font-bold text-2xl mb-4">
           Send donation to {user.username}
@@ -203,7 +203,7 @@ export default function User({ user }: { user: User }) {
           )}
         </div>
       </div>
-    </MainLayout>
+    </GuestMainLayout>
   );
 }
 

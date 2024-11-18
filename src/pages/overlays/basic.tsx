@@ -1,3 +1,4 @@
+import Queue from "@/utils/Queue";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { io } from "socket.io-client";
@@ -10,7 +11,7 @@ const Formula1 = () => {
 
   useEffect(() => {
     if (router.isReady) {
-      console.log(router);
+      const q = new Queue();
 
       socket.connect();
 
@@ -18,7 +19,7 @@ const Formula1 = () => {
         socket.emit("join", router.query.streamkey);
       });
 
-      socket.on("donation", (donation) => console.log(donation));
+      socket.on("donation", q.incomingDonation);
     }
 
     return () => {
@@ -35,9 +36,13 @@ const Formula1 = () => {
           Syahrul
         </span>{" "}
         baru saja memberikan{" "}
-        <span className="font-semibold text-[#744fc9]">Rp 20,000</span>
+        <span className="font-semibold text-[#744fc9]" id="amount">
+          Rp 20,000
+        </span>
       </p>
-      <p className="text-center">Halo bang</p>
+      <p className="text-center" id="message">
+        Halo bang
+      </p>
     </div>
   );
 };

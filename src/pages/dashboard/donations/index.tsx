@@ -1,5 +1,5 @@
 import MainLayout from "@/components/layouts/MainLayout";
-import { accessTokenAtom } from "@/jotai/state";
+import { accessTokenAtom } from "@/utils/state";
 import axios from "axios";
 import { useAtomValue } from "jotai";
 import { useEffect, useState } from "react";
@@ -22,6 +22,7 @@ const Donations = () => {
     if (accessToken) {
       getDonations();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [accessToken]);
 
   const getDonations = async () => {
@@ -55,8 +56,8 @@ const Donations = () => {
   return (
     <MainLayout>
       <div className="p-5">
-        <p>Donations page</p>
-        <div className="grid grid-cols-1 gap-3 mt-5">
+        <p>Donations</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-5">
           {donations.map((donation, index) => (
             <div key={index} className="bg-gray-100 p-3 border">
               <p>Dari: {donation.donator_name}</p>

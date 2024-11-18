@@ -1,6 +1,6 @@
-import { userAtom } from "@/jotai/state";
+import { userAtom } from "@/utils/state";
 import axios, { AxiosError } from "axios";
-import { useAtom, useAtomValue } from "jotai";
+import { useAtomValue } from "jotai";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Swal from "sweetalert2";
@@ -16,7 +16,7 @@ const Navbar = ({ authenticated = false }: { authenticated: boolean }) => {
         icon: "success",
         title: "Logout success",
       });
-      router.push("/");
+      router.reload();
     } catch (error) {
       if (error instanceof AxiosError) {
         Swal.fire({

@@ -1,5 +1,5 @@
 import MainLayout from "@/components/layouts/MainLayout";
-import { isAuthAtom, userAtom } from "@/jotai/state";
+import { isAuthAtom, userAtom } from "@/utils/state";
 import { useAtomValue } from "jotai";
 
 const Dashboard = () => {

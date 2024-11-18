@@ -1,4 +1,4 @@
-import { accessTokenAtom, isAuthAtom, userAtom } from "@/jotai/state";
+import { accessTokenAtom, isAuthAtom, userAtom } from "@/utils/state";
 import axios from "axios";
 import { useAtom } from "jotai";
 import React, { useEffect } from "react";
@@ -11,6 +11,7 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     getCurrentUser();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getCurrentUser = async () => {

@@ -23,7 +23,7 @@ const TransactionDetail = () => {
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [donation, setDonation] = useState<TransactionDetailResponse>();
   const router = useRouter();
-  const socket = io("ws://localhost:3030/transactions", {
+  const socket = io(`${process.env.NEXT_PUBLIC_WEBSOCKET_URL}/transactions`, {
     autoConnect: false,
   });
 

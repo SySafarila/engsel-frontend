@@ -2,17 +2,29 @@ import MainLayout from "@/components/layouts/MainLayout";
 import axios, { AxiosError } from "axios";
 import { GetStaticPaths } from "next";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { io } from "socket.io-client";
 import Swal from "sweetalert2";
 
 type User = {
+  id: string;
   name: string;
   username: string;
 };
+
 type Users = {
   message: string;
   user: User[];
+};
+
+type Donation = {
+  amount: number;
+  donator: {
+    name: string;
+  };
+  message: string;
+  currency: string;
 };
 
 type SendRequest = {
@@ -34,7 +46,31 @@ type RequiredRequest = {
 export default function User({ user }: { user: User }) {
   const { register, handleSubmit } = useForm();
   const [isSending, setIsSending] = useState<boolean>(false);
+  const [latestDonation, setLatestDonation] = useState<Donation | null>(null);
   const router = useRouter();
+  const socket = io(`${process.env.NEXT_PUBLIC_WEBSOCKET_URL}/donations`, {
+    autoConnect: false,
+  });
+
+  useEffect(() => {
+    socket.connect();
+
+    socket.on("connect", () => {
+      socket.emit("join", user.id);
+    });
+
+    socket.on("donation", (donation) => {
+      console.log(donation);
+      setLatestDonation(donation);
+    });
+
+    return () => {
+      socket.disconnect();
+      socket.off("donation");
+      socket.off("connect");
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router]);
 
   const sendRequest = async (data: SendRequest) => {
     if (isSending === true) {
@@ -158,6 +194,14 @@ export default function User({ user }: { user: User }) {
             </button>
           </div>
         </form>
+        <div className="mt-3">
+          {latestDonation && (
+            <p>
+              {latestDonation.donator.name ?? "-"} baru saja mengirim Rp{" "}
+              {latestDonation.amount}
+            </p>
+          )}
+        </div>
       </div>
     </MainLayout>
   );

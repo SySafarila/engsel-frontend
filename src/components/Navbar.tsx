@@ -1,10 +1,13 @@
+import { userAtom } from "@/jotai/state";
 import axios, { AxiosError } from "axios";
+import { useAtom, useAtomValue } from "jotai";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Swal from "sweetalert2";
 
 const Navbar = ({ authenticated = false }: { authenticated: boolean }) => {
   const router = useRouter();
+  const user = useAtomValue(userAtom);
 
   const logout = async () => {
     try {
@@ -32,7 +35,7 @@ const Navbar = ({ authenticated = false }: { authenticated: boolean }) => {
             <Link href="/dashboard">Dashboard</Link>
             <Link href="/dashboard/donations">Donations</Link>
             <span onClick={logout} className="cursor-pointer">
-              Logout
+              Logout ({user?.name})
             </span>
           </>
         )}

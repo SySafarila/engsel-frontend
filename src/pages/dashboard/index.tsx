@@ -1,15 +1,16 @@
 import MainLayout from "@/components/layouts/MainLayout";
+import { isAuthAtom, userAtom } from "@/jotai/state";
+import { useAtomValue } from "jotai";
 
 const Dashboard = () => {
+  const isAuth = useAtomValue(isAuthAtom);
+  const user = useAtomValue(userAtom);
+
   return (
     <MainLayout>
       <div className="p-5">
-        <p>dashboard</p>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem
-          sit dolorum a aut ullam neque, aliquam dignissimos molestiae quidem
-          tempore nam aperiam eligendi ex omnis cum, et repudiandae est fuga?
-        </p>
+        <p>Dashboard</p>
+        <p>Hello {isAuth ? user?.name : "guest"}</p>
       </div>
     </MainLayout>
   );

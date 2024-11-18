@@ -1,0 +1,45 @@
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { io } from "socket.io-client";
+
+const Formula1 = () => {
+  const router = useRouter();
+  const socket = io(`${process.env.NEXT_PUBLIC_WEBSOCKET_URL}/donations`, {
+    autoConnect: false,
+  });
+
+  useEffect(() => {
+    if (router.isReady) {
+      console.log(router);
+
+      socket.connect();
+
+      socket.on("connect", () => {
+        socket.emit("join", router.query.streamkey);
+      });
+
+      socket.on("donation", (donation) => console.log(donation));
+    }
+
+    return () => {
+      socket.off("donation");
+      socket.disconnect();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.isReady]);
+
+  return (
+    <div className="border border-black p-3 bg-[#faae2b] m-2">
+      <p className="text-center">
+        <span id="donatorName" className="font-semibold text-[#744fc9]">
+          Syahrul
+        </span>{" "}
+        baru saja memberikan{" "}
+        <span className="font-semibold text-[#744fc9]">Rp 20,000</span>
+      </p>
+      <p className="text-center">Halo bang</p>
+    </div>
+  );
+};
+
+export default Formula1;

@@ -1,6 +1,7 @@
 import MainLayout from "@/components/layouts/MainLayout";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 
 type Donations = {
   amount: number;
@@ -23,7 +24,7 @@ const Donations = () => {
   const getDonations = async () => {
     try {
       const res = await axios.get(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/donations`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/donations`,
         {
           withCredentials: true,
         }
@@ -48,6 +49,30 @@ const Donations = () => {
 
   const replayDonation = async (transactionId: string) => {
     console.log(transactionId);
+    try {
+      await axios.post(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/donations/replay`,
+        {
+          transaction_id: transactionId,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+
+      Swal.fire({
+        icon: "success",
+        title: "Sukses!",
+      });
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        Swal.fire({
+          icon: "error",
+          title: "Failed!",
+          text: error.response?.data.message ?? "-",
+        });
+      }
+    }
   };
 
   return (

@@ -89,7 +89,7 @@ export default function User({ user }: { user: User }) {
 
     try {
       const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/${user.username}/donate`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/donations/${user.username}/donate`,
         requestBody
       );
 

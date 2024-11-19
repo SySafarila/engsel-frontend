@@ -29,6 +29,8 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
       setUser({
         email: res.data.user.email,
         name: res.data.user.name,
+        id: res.data.user.id,
+        username: res.data.user.username,
       });
     } catch {
       setIsAuth(false);

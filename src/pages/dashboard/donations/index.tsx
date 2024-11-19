@@ -15,6 +15,7 @@ type Donations = {
 
 const Donations = () => {
   const [donations, setDonations] = useState<Donations[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     getDonations();
@@ -30,7 +31,9 @@ const Donations = () => {
         }
       );
       setDonations(res.data.donations);
+      setIsLoading(false);
     } catch (error) {
+      setIsLoading(false);
       console.error(error);
     }
   };
@@ -48,7 +51,6 @@ const Donations = () => {
   };
 
   const replayDonation = async (transactionId: string) => {
-    console.log(transactionId);
     try {
       await axios.post(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/donations/replay`,
@@ -79,27 +81,31 @@ const Donations = () => {
     <MainLayout>
       <div className="p-5">
         <p>Donations</p>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-5">
-          {donations.map((donation) => (
-            <div key={donation.id} className="bg-gray-100 p-3 border">
-              <div className="flex justify-between gap-2">
-                <p className="w-full break-all">
-                  Dari: {donation.donator_name}
-                </p>
-                <small
-                  className="cursor-pointer"
-                  onClick={() => replayDonation(donation.id)}
-                >
-                  Replay
-                </small>
+        {isLoading && <p>Loading...</p>}
+        {!isLoading && donations.length > 0 && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-5">
+            {donations.map((donation) => (
+              <div key={donation.id} className="bg-gray-100 p-3 border">
+                <div className="flex justify-between gap-2">
+                  <p className="w-full break-all">
+                    Dari: {donation.donator_name}
+                  </p>
+                  <small
+                    className="cursor-pointer hover:underline text-blue-500"
+                    onClick={() => replayDonation(donation.id)}
+                  >
+                    Replay
+                  </small>
+                </div>
+                <small>Email: {donation.donator_email ?? "-"}</small>
+                <p>Rp {rupiahFormat(donation.amount)}</p>
+                <p>&quot;{donation.message}&quot;</p>
+                <small>{formatDate(donation.updated_at)}</small>
               </div>
-              <small>Email: {donation.donator_email ?? "-"}</small>
-              <p>Rp {rupiahFormat(donation.amount)}</p>
-              <p>&quot;{donation.message}&quot;</p>
-              <small>{formatDate(donation.updated_at)}</small>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
+        {!isLoading && donations.length == 0 && <p>Tidak ada data</p>}
       </div>
     </MainLayout>
   );

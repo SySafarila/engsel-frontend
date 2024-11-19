@@ -13,10 +13,10 @@ type User = {
   username: string;
 };
 
-type Users = {
-  message: string;
-  user: User[];
-};
+// type Users = {
+//   message: string;
+//   user: User[];
+// };
 
 type Donation = {
   amount: number;
@@ -209,14 +209,19 @@ export default function User({ user }: { user: User }) {
 
 export const getStaticPaths: GetStaticPaths = async () => {
   try {
-    const users: Users = (
-      await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/users`)
-    ).data;
-    const paths = users.user.map((user: User) => ({
+    // const users: Users = (
+    //   await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/users`)
+    // ).data;
+    // const paths = users.user.map((user: User) => ({
+    //   params: {
+    //     username: String(user.username),
+    //   },
+    // }));
+    const paths: {
       params: {
-        username: String(user.username),
-      },
-    }));
+        username: string;
+      };
+    }[] = [];
 
     // We'll prerender only these paths at build time.
     // { fallback: 'blocking' } will server-render pages

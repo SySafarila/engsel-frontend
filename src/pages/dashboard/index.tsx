@@ -8,18 +8,28 @@ const Dashboard = () => {
 
   return (
     <MainLayout>
-      <div className="p-5">
-        <p>Dashboard</p>
-        <p>Hello {user?.name ?? "..."}</p>
-        <p>
-          <span>Menu: </span>
+      <div className="p-5 grid grid-cols-1 gap-4">
+        <h1 className="text-2xl">Hello {user?.name ?? "..."}</h1>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+          <Link
+            href="/dashboard/donations"
+            className="bg-gray-100 border p-3 hover:bg-gray-200"
+          >
+            Donasi & Dukungan Masuk
+          </Link>
+          <Link
+            href="/dashboard/overlay"
+            className="bg-gray-100 border p-3 hover:bg-gray-200"
+          >
+            Overlay Untuk OBS & Streamlabs
+          </Link>
           <Link
             href="/dashboard/account"
-            className="text-blue-500 hover:underline"
+            className="bg-gray-100 border p-3 hover:bg-gray-200"
           >
             Pengaturan Akun
           </Link>
-        </p>
+        </div>
       </div>
     </MainLayout>
   );

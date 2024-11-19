@@ -59,7 +59,8 @@ const Account = () => {
 
   return (
     <MainLayout>
-      <div className="p-5">
+      <div className="p-5 grid grid-cols-1 gap-4">
+        <h1 className="text-2xl">Pengaturan Akun</h1>
         {user && (
           <form
             className="grid grid-cols-1 md:grid-cols-2 gap-3"

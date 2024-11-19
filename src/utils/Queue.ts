@@ -55,6 +55,7 @@ export default class Queue {
 
     this.DOM.hideDonation();
     this.deletePlayedQueue();
+    await this.addDelay(1000);
 
     if (this.queue.length >= 1) {
       this.startQueue();

@@ -79,11 +79,11 @@ const Donations = () => {
 
   return (
     <MainLayout>
-      <div className="p-5">
-        <p>Donations</p>
+      <div className="p-5 grid grid-cols-1 gap-4">
+        <h1 className="text-2xl">Donasi & Dukungan</h1>
         {isLoading && <p>Loading...</p>}
         {!isLoading && donations.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {donations.map((donation) => (
               <div key={donation.id} className="bg-gray-100 p-3 border">
                 <div className="flex justify-between gap-2">

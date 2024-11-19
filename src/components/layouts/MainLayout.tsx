@@ -41,6 +41,7 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
     <>
       <Navbar authenticated={true} />
       <div className="max-w-screen-md mx-auto">{children}</div>
+      <p className="text-center">&copy; 2024 <a href="https://github.com/sysafarila" className="text-blue-500 hover:underline">SySafarila</a></p>
     </>
   );
 };

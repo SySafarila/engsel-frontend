@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import MainLayout from "@/components/layouts/MainLayout";
+import GuestMainLayout from "@/components/layouts/GuestMainLayout";
 import axios, { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -132,7 +132,7 @@ const TransactionDetail = () => {
   };
 
   return (
-    <MainLayout>
+    <GuestMainLayout>
       <div className={`p-5 ${!isLoaded && "hidden"}`}>
         {donation?.qris && (
           <>
@@ -169,7 +169,7 @@ const TransactionDetail = () => {
           <p className="text-center">Transaksi telah dibayar</p>
         )}
       </div>
-    </MainLayout>
+    </GuestMainLayout>
   );
 };
 

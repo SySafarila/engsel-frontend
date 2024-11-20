@@ -40,7 +40,9 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
       if (error instanceof AxiosError) {
         if (error.status === 401) {
           logout().then(() => {
-            router.reload();
+            setTimeout(() => {
+              router.reload();
+            }, 1000);
           });
         }
       }

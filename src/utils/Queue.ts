@@ -1,19 +1,10 @@
 import Dom from "./Dom";
 import Sound from "./Sound";
-
-type Donation = {
-  donator: {
-    name: string;
-    email?: string;
-  };
-  amount: number;
-  currency: string;
-  message: string;
-};
+import { Donation, Donations } from "./types";
 
 export default class Queue {
   private isPlaying: boolean = false;
-  private queue: Donation[] = [];
+  private queue: Donations = [];
   private sound = new Sound();
   private DOM = new Dom();
 
@@ -36,7 +27,7 @@ export default class Queue {
   private async startQueue() {
     console.count(
       `Showing donation from ${
-        this.getDonation().donator.name
+        this.getDonation().donator_name
       }, Rp ${this.numberFormat(this.getDonation().amount)}`
     );
 
@@ -44,7 +35,7 @@ export default class Queue {
 
     this.DOM.format({
       amount: `Rp ${this.numberFormat(this.getDonation().amount)}`,
-      donatorName: this.getDonation().donator.name,
+      donatorName: this.getDonation().donator_name,
       message: this.getDonation().message,
       templateText: "baru saja memberikan ",
     });

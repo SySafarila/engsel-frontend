@@ -1,22 +1,13 @@
 import MainLayout from "@/components/layouts/MainLayout";
+import { Donations as DonationsType } from "@/utils/types";
 import axios, { AxiosError } from "axios";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
-type Donations = {
-  amount: number;
-  created_at: string;
-  updated_at: string;
-  donator_name: string;
-  donator_email?: string;
-  id: string;
-  message: string;
-};
-
 const Donations = () => {
-  const [donations, setDonations] = useState<Donations[]>([]);
+  const [donations, setDonations] = useState<DonationsType>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const router = useRouter();
 

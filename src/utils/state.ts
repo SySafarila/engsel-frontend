@@ -1,11 +1,5 @@
 import { atom } from "jotai";
-
-export type User = {
-  id: string;
-  email: string;
-  name: string;
-  username: string;
-};
+import { User } from "./types";
 
 export const isAuthAtom = atom(false);
 export const userAtom = atom<null | User>(null);

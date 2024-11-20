@@ -1,4 +1,5 @@
 import GuestMainLayout from "@/components/layouts/GuestMainLayout";
+import { Donation } from "@/utils/types";
 import axios, { AxiosError } from "axios";
 import { GetStaticPaths } from "next";
 import { useRouter } from "next/router";
@@ -11,20 +12,6 @@ type User = {
   id: string;
   name: string;
   username: string;
-};
-
-// type Users = {
-//   message: string;
-//   user: User[];
-// };
-
-type Donation = {
-  amount: number;
-  donator: {
-    name: string;
-  };
-  message: string;
-  currency: string;
 };
 
 type SendRequest = {
@@ -197,7 +184,7 @@ export default function User({ user }: { user: User }) {
         <div className="mt-3">
           {latestDonation && (
             <p>
-              {latestDonation.donator.name ?? "-"} baru saja mengirim Rp{" "}
+              {latestDonation.donator_name ?? "-"} baru saja mengirim Rp{" "}
               {latestDonation.amount}
             </p>
           )}

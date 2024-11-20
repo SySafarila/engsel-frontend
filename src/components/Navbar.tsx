@@ -1,4 +1,5 @@
-import axios, { AxiosError } from "axios";
+import { logout } from "@/utils/logout";
+import { AxiosError } from "axios";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Swal from "sweetalert2";
@@ -6,9 +7,9 @@ import Swal from "sweetalert2";
 const Navbar = ({ authenticated = false }: { authenticated: boolean }) => {
   const router = useRouter();
 
-  const logout = async () => {
+  const logoutNow = async () => {
     try {
-      await axios.post("/api/logout");
+      await logout();
       await Swal.fire({
         icon: "success",
         title: "Logout success",
@@ -32,7 +33,7 @@ const Navbar = ({ authenticated = false }: { authenticated: boolean }) => {
               <Link href="/dashboard">Dashboard</Link>
               <Link href="/dashboard/donations">Donations</Link>
             </div>
-            <span onClick={logout} className="cursor-pointer">
+            <span onClick={logoutNow} className="cursor-pointer">
               Logout
             </span>
           </div>

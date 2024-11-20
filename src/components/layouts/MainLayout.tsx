@@ -1,12 +1,15 @@
+import { logout } from "@/utils/logout";
 import { isAuthAtom, userAtom } from "@/utils/state";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useAtom } from "jotai";
+import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import Navbar from "../Navbar";
 
 const MainLayout = ({ children }: { children: React.ReactNode }) => {
   const [isAuth, setIsAuth] = useAtom(isAuthAtom);
   const [, setUser] = useAtom(userAtom);
+  const router = useRouter();
 
   useEffect(() => {
     getCurrentUser();
@@ -32,8 +35,15 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
         id: res.data.user.id,
         username: res.data.user.username,
       });
-    } catch {
+    } catch (error) {
       setIsAuth(false);
+      if (error instanceof AxiosError) {
+        if (error.status === 401) {
+          logout().then(() => {
+            router.reload();
+          });
+        }
+      }
     }
   };
 
@@ -41,7 +51,15 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
     <>
       <Navbar authenticated={true} />
       <div className="max-w-screen-md mx-auto">{children}</div>
-      <p className="text-center">&copy; 2024 <a href="https://github.com/sysafarila" className="text-blue-500 hover:underline">SySafarila</a></p>
+      <p className="text-center">
+        &copy; 2024{" "}
+        <a
+          href="https://github.com/sysafarila"
+          className="text-blue-500 hover:underline"
+        >
+          SySafarila
+        </a>
+      </p>
     </>
   );
 };

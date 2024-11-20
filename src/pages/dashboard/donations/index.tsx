@@ -1,5 +1,7 @@
 import MainLayout from "@/components/layouts/MainLayout";
 import axios, { AxiosError } from "axios";
+import Link from "next/link";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
@@ -16,11 +18,14 @@ type Donations = {
 const Donations = () => {
   const [donations, setDonations] = useState<Donations[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const router = useRouter();
 
   useEffect(() => {
-    getDonations();
+    if (router.isReady) {
+      getDonations();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [router.isReady, router.query]);
 
   const getDonations = async () => {
     try {
@@ -28,9 +33,22 @@ const Donations = () => {
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/donations`,
         {
           withCredentials: true,
+          params: {
+            cursor: router.query.cursor,
+          },
         }
       );
-      setDonations(res.data.donations);
+
+      if (router.query.cursor) {
+        if (donations.length == 0) {
+          setDonations(res.data.donations);
+        } else {
+          setDonations((current) => current.concat(res.data.donations));
+        }
+      } else {
+        setDonations(res.data.donations);
+      }
+
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
@@ -84,8 +102,8 @@ const Donations = () => {
         {isLoading && <p>Loading...</p>}
         {!isLoading && donations.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            {donations.map((donation) => (
-              <div key={donation.id} className="bg-gray-100 p-3 border">
+            {donations.map((donation, key) => (
+              <div key={key} className="bg-gray-100 p-3 border">
                 <div className="flex justify-between gap-2">
                   <p className="w-full break-all">
                     Dari: {donation.donator_name}
@@ -103,6 +121,15 @@ const Donations = () => {
                 <small>{formatDate(donation.updated_at)}</small>
               </div>
             ))}
+            <Link
+              href={`/dashboard/donations?cursor=${
+                donations[donations.length - 1].id
+              }`}
+              scroll={false}
+              className="bg-gray-100 md:col-span-2 text-center py-2 border hover:bg-gray-200"
+            >
+              More
+            </Link>
           </div>
         )}
         {!isLoading && donations.length == 0 && <p>Tidak ada data</p>}

@@ -13,19 +13,25 @@ const Dashboard = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
           <Link
             href="/dashboard/donations"
-            className="bg-gray-100 border p-3 hover:bg-gray-200"
+            className="bg-gray-100 border p-3 hover:bg-gray-200 text-center flex items-center justify-center"
           >
             Donasi & Dukungan Masuk
           </Link>
           <Link
             href="/dashboard/overlay"
-            className="bg-gray-100 border p-3 hover:bg-gray-200"
+            className="bg-gray-100 border p-3 hover:bg-gray-200 text-center flex items-center justify-center"
           >
             Overlay Untuk OBS & Streamlabs
           </Link>
           <Link
+            href="/dashboard/withdraws"
+            className="bg-gray-100 border p-3 hover:bg-gray-200 text-center flex items-center justify-center"
+          >
+            Penarikan
+          </Link>
+          <Link
             href="/dashboard/account"
-            className="bg-gray-100 border p-3 hover:bg-gray-200"
+            className="bg-gray-100 border p-3 hover:bg-gray-200 text-center flex items-center justify-center"
           >
             Pengaturan Akun
           </Link>

@@ -34,6 +34,7 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
         name: res.data.user.name,
         id: res.data.user.id,
         username: res.data.user.username,
+        balance: res.data.user.balance,
       });
     } catch (error) {
       setIsAuth(false);

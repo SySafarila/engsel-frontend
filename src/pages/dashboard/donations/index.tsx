@@ -1,4 +1,6 @@
 import MainLayout from "@/components/layouts/MainLayout";
+import { formatDate } from "@/utils/formatDate";
+import formatRupiah from "@/utils/formatRupiah";
 import { Donations as DonationsType } from "@/utils/types";
 import axios, { AxiosError } from "axios";
 import Link from "next/link";
@@ -45,18 +47,6 @@ const Donations = () => {
       setIsLoading(false);
       console.error(error);
     }
-  };
-
-  const formatDate = (date: string): string => {
-    const dateRaw = new Date(date);
-
-    return `${dateRaw.getDate()}/${
-      dateRaw.getMonth() + 1
-    }/${dateRaw.getFullYear()} ${dateRaw.getHours()}:${dateRaw.getMinutes()}`;
-  };
-
-  const rupiahFormat = (amount: number): string => {
-    return new Intl.NumberFormat().format(amount);
   };
 
   const replayDonation = async (transactionId: string) => {
@@ -107,7 +97,7 @@ const Donations = () => {
                   </small>
                 </div>
                 <small>Email: {donation.donator_email ?? "-"}</small>
-                <p>Rp {rupiahFormat(donation.amount)}</p>
+                <p>Rp {formatRupiah(donation.amount)}</p>
                 <p>&quot;{donation.message}&quot;</p>
                 <small>{formatDate(donation.updated_at)}</small>
               </div>

@@ -1,12 +1,16 @@
 import MainLayout from "@/components/layouts/MainLayout";
+import { formatDate } from "@/utils/formatDate";
 import { userAtom } from "@/utils/state";
 import axios, { AxiosError } from "axios";
-import { useAtomValue } from "jotai";
+import { useAtom } from "jotai";
+import Link from "next/link";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 
 type WithdrawType = {
+  id: string;
   amount: number;
   is_pending: boolean;
   created_at: string;
@@ -16,14 +20,18 @@ type WithdrawType = {
 type WithdrawsType = WithdrawType[];
 
 const Withdraws = () => {
-  const user = useAtomValue(userAtom);
+  const [user, setUser] = useAtom(userAtom);
   const [currentWithdraws, setCurrentWithdraws] = useState<WithdrawsType>([]);
   const [isSending, setIsSending] = useState<boolean>(false);
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, setValue } = useForm();
+  const router = useRouter();
 
   useEffect(() => {
-    getData();
-  }, []);
+    if (router.isReady) {
+      getData();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.isReady, router.query]);
 
   const getData = async () => {
     try {
@@ -31,6 +39,10 @@ const Withdraws = () => {
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/withdraws`,
         {
           withCredentials: true,
+          params: {
+            is_pending: router.query.is_pending,
+            cursor: router.query.cursor,
+          },
         }
       );
 
@@ -41,9 +53,15 @@ const Withdraws = () => {
           created_at: data.created_at,
           updated_at: data.updated_at,
           is_pending: data.is_pending,
+          id: data.id,
         });
       });
-      setCurrentWithdraws(arr);
+
+      if (router.query.cursor) {
+        setCurrentWithdraws((current) => current.concat(arr));
+      } else {
+        setCurrentWithdraws(arr);
+      }
     } catch (error) {
       if (error instanceof AxiosError) {
         Swal.fire({
@@ -62,7 +80,7 @@ const Withdraws = () => {
     }
     setIsSending(true);
     try {
-      const res = await axios.post(
+      await axios.post(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/withdraws`,
         {
           amount: values.amount,
@@ -71,9 +89,12 @@ const Withdraws = () => {
           withCredentials: true,
         }
       );
-      console.log(res);
+
+      setValue("amount", null);
+
       setIsSending(false);
       getData();
+      fetchCurrentBalance();
     } catch (error) {
       setIsSending(false);
       if (error instanceof AxiosError) {
@@ -84,6 +105,22 @@ const Withdraws = () => {
         });
       }
     }
+  };
+
+  const fetchCurrentBalance = async () => {
+    const me = await axios.get(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/me`,
+      {
+        withCredentials: true,
+      }
+    );
+    setUser({
+      email: me.data.user.email,
+      name: me.data.user.name,
+      id: me.data.user.id,
+      username: me.data.user.username,
+      balance: me.data.user.balance,
+    });
   };
 
   return (
@@ -107,13 +144,43 @@ const Withdraws = () => {
             {isSending ? "Loading..." : "Kirim"}
           </button>
         </form>
-        <div className="grid grid-cols-1 gap-4">
+        <div className="grid grid-cols-2 gap-2">
+          <Link
+            href={`/dashboard/withdraws?is_pending=true`}
+            className={`bg-gray-100 py-2 text-center border hover:bg-gray-200 ${
+              router.query.is_pending == "true" && "bg-gray-200"
+            }`}
+          >
+            Pending
+          </Link>
+          <Link
+            href={`/dashboard/withdraws?is_pending=false`}
+            className={`bg-gray-100 py-2 text-center border hover:bg-gray-200 ${
+              router.query.is_pending == "false" && "bg-gray-200"
+            }`}
+          >
+            Sukses
+          </Link>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {currentWithdraws.map((wd, index) => (
             <div key={index} className="bg-gray-100 p-3 border">
               <p>Jumlah: {wd.amount}</p>
               <p>Status: {wd.is_pending ? "Pending" : "Sukses"}</p>
+              <small>{formatDate(wd.created_at)}</small>
             </div>
           ))}
+          {currentWithdraws.length > 0 && (
+            <Link
+              href={`/dashboard/withdraws?cursor=${
+                currentWithdraws[currentWithdraws.length - 1].id
+              }&is_pending=${router.query.is_pending ?? ""}`}
+              scroll={false}
+              className="bg-gray-100 md:col-span-2 text-center py-2 border hover:bg-gray-200"
+            >
+              More
+            </Link>
+          )}
         </div>
       </div>
     </MainLayout>

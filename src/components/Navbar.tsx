@@ -31,7 +31,7 @@ const Navbar = ({ authenticated = false }: { authenticated: boolean }) => {
           <div className="flex gap-3 justify-between w-full">
             <div className="flex gap-3">
               <Link href="/dashboard">Dashboard</Link>
-              <Link href="/dashboard/donations">Donations</Link>
+              <Link href="/dashboard/donations">Dukungan</Link>
             </div>
             <span onClick={logoutNow} className="cursor-pointer">
               Logout

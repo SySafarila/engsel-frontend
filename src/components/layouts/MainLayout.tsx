@@ -54,7 +54,7 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
     <>
       <Navbar authenticated={true} />
       <div className="max-w-screen-md mx-auto">{children}</div>
-      <p className="text-center">
+      <p className="text-center mb-5">
         &copy; 2024{" "}
         <a
           href="https://github.com/sysafarila"

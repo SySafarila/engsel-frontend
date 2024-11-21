@@ -24,7 +24,7 @@ const Dashboard = () => {
             Overlay Untuk OBS & Streamlabs
           </Link>
           <Link
-            href="/dashboard/withdraws"
+            href="/dashboard/withdraws?is_pending=true"
             className="bg-gray-100 border p-3 hover:bg-gray-200 text-center flex items-center justify-center"
           >
             Penarikan

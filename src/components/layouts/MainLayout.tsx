@@ -12,6 +12,8 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
 
   useEffect(() => {
+    console.log("Main Layout");
+
     getCurrentUser();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

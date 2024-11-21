@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Navbar from "../Navbar";
 
 const GuestMainLayout = ({ children }: { children: React.ReactNode }) => {
+  useEffect(() => {
+    console.log("Guest Layout");
+  }, []);
   return (
     <>
       <Navbar authenticated={false} />

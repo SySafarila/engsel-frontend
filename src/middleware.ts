@@ -2,7 +2,7 @@ import * as jose from "jose";
 import { NextRequest, NextResponse } from "next/server";
 
 export const middleware = async (request: NextRequest) => {
-  console.log("MIDDLEWARE");
+  console.log("MIDDLEWARE: " + request.url);
 
   const authCookie = request.cookies.get("access_token");
 

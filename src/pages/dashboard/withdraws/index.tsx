@@ -1,11 +1,12 @@
 import MainLayout from "@/components/layouts/MainLayout";
+import { NextPageWithLayout } from "@/pages/_app";
 import formatDate from "@/utils/formatDate";
 import { userAtom } from "@/utils/state";
 import axios, { AxiosError } from "axios";
 import { useAtom } from "jotai";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 
@@ -19,7 +20,7 @@ type WithdrawType = {
 
 type WithdrawsType = WithdrawType[];
 
-const Withdraws = () => {
+const Withdraws: NextPageWithLayout = () => {
   const [user, setUser] = useAtom(userAtom);
   const [currentWithdraws, setCurrentWithdraws] = useState<WithdrawsType>([]);
   const [isSending, setIsSending] = useState<boolean>(false);
@@ -124,67 +125,70 @@ const Withdraws = () => {
   };
 
   return (
-    <MainLayout>
-      <div className="p-5 grid grid-cols-1 gap-4">
-        <h1 className="text-2xl">Penarikan</h1>
-        <p>Saldo tersisa: {user?.balance}</p>
-        <form onSubmit={handleSubmit(requestWithdraw)} className="flex gap-2">
-          <input
-            type="number"
-            id="amount"
-            className="border py-2 px-3 flex-grow"
-            placeholder="Jumlah penarikan"
-            {...register("amount", { required: true })}
-          />
-          <button
-            className="bg-green-500 hover:bg-green-600 px-3 py-2 text-white disabled:bg-gray-200 disabled:text-black"
-            type="submit"
-            disabled={isSending}
-          >
-            {isSending ? "Loading..." : "Kirim"}
-          </button>
-        </form>
-        <div className="grid grid-cols-2 gap-2">
-          <Link
-            href={`/dashboard/withdraws?is_pending=true`}
-            className={`bg-gray-100 py-2 text-center border hover:bg-gray-200 ${
-              router.query.is_pending == "true" && "bg-gray-200"
-            }`}
-          >
-            Pending
-          </Link>
-          <Link
-            href={`/dashboard/withdraws?is_pending=false`}
-            className={`bg-gray-100 py-2 text-center border hover:bg-gray-200 ${
-              router.query.is_pending == "false" && "bg-gray-200"
-            }`}
-          >
-            Sukses
-          </Link>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {currentWithdraws.map((wd, index) => (
-            <div key={index} className="bg-gray-100 p-3 border">
-              <p>Jumlah: {wd.amount}</p>
-              <p>Status: {wd.is_pending ? "Pending" : "Sukses"}</p>
-              <small>{formatDate(wd.created_at)}</small>
-            </div>
-          ))}
-          {currentWithdraws.length > 0 && (
-            <Link
-              href={`/dashboard/withdraws?cursor=${
-                currentWithdraws[currentWithdraws.length - 1].id
-              }&is_pending=${router.query.is_pending ?? ""}`}
-              scroll={false}
-              className="bg-gray-100 md:col-span-2 text-center py-2 border hover:bg-gray-200"
-            >
-              More
-            </Link>
-          )}
-        </div>
+    <div className="p-5 grid grid-cols-1 gap-4">
+      <h1 className="text-2xl">Penarikan</h1>
+      <p>Saldo tersisa: {user?.balance}</p>
+      <form onSubmit={handleSubmit(requestWithdraw)} className="flex gap-2">
+        <input
+          type="number"
+          id="amount"
+          className="border py-2 px-3 flex-grow"
+          placeholder="Jumlah penarikan"
+          {...register("amount", { required: true })}
+        />
+        <button
+          className="bg-green-500 hover:bg-green-600 px-3 py-2 text-white disabled:bg-gray-200 disabled:text-black"
+          type="submit"
+          disabled={isSending}
+        >
+          {isSending ? "Loading..." : "Kirim"}
+        </button>
+      </form>
+      <div className="grid grid-cols-2 gap-2">
+        <Link
+          href={`/dashboard/withdraws?is_pending=true`}
+          className={`bg-gray-100 py-2 text-center border hover:bg-gray-200 ${
+            router.query.is_pending == "true" && "bg-gray-200"
+          }`}
+        >
+          Pending
+        </Link>
+        <Link
+          href={`/dashboard/withdraws?is_pending=false`}
+          className={`bg-gray-100 py-2 text-center border hover:bg-gray-200 ${
+            router.query.is_pending == "false" && "bg-gray-200"
+          }`}
+        >
+          Sukses
+        </Link>
       </div>
-    </MainLayout>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {currentWithdraws.map((wd, index) => (
+          <div key={index} className="bg-gray-100 p-3 border">
+            <p>Jumlah: {wd.amount}</p>
+            <p>Status: {wd.is_pending ? "Pending" : "Sukses"}</p>
+            <small>{formatDate(wd.created_at)}</small>
+          </div>
+        ))}
+        {currentWithdraws.length == 0 && <p>Data tidak ditemukan</p>}
+        {currentWithdraws.length > 0 && (
+          <Link
+            href={`/dashboard/withdraws?cursor=${
+              currentWithdraws[currentWithdraws.length - 1].id
+            }&is_pending=${router.query.is_pending ?? ""}`}
+            scroll={false}
+            className="bg-gray-100 md:col-span-2 text-center py-2 border hover:bg-gray-200"
+          >
+            More
+          </Link>
+        )}
+      </div>
+    </div>
   );
 };
 
 export default Withdraws;
+
+Withdraws.getLayout = (page: ReactElement) => {
+  return <MainLayout>{page}</MainLayout>;
+};

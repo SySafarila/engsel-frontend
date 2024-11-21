@@ -1,14 +1,15 @@
 import MainLayout from "@/components/layouts/MainLayout";
+import { NextPageWithLayout } from "@/pages/_app";
 import formatDate from "@/utils/formatDate";
 import formatRupiah from "@/utils/formatRupiah";
 import { Donations as DonationsType } from "@/utils/types";
 import axios, { AxiosError } from "axios";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
-const Donations = () => {
+const Donations: NextPageWithLayout = () => {
   const [donations, setDonations] = useState<DonationsType>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const router = useRouter();
@@ -77,46 +78,48 @@ const Donations = () => {
   };
 
   return (
-    <MainLayout>
-      <div className="p-5 grid grid-cols-1 gap-4">
-        <h1 className="text-2xl">Donasi & Dukungan</h1>
-        {isLoading && <p>Loading...</p>}
-        {!isLoading && donations.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            {donations.map((donation, key) => (
-              <div key={key} className="bg-gray-100 p-3 border">
-                <div className="flex justify-between gap-2">
-                  <p className="w-full break-all">
-                    Dari: {donation.donator_name}
-                  </p>
-                  <small
-                    className="cursor-pointer hover:underline text-blue-500"
-                    onClick={() => replayDonation(donation.id)}
-                  >
-                    Replay
-                  </small>
-                </div>
-                <small>Email: {donation.donator_email ?? "-"}</small>
-                <p>Rp {formatRupiah(donation.amount)}</p>
-                <p>&quot;{donation.message}&quot;</p>
-                <small>{formatDate(donation.updated_at)}</small>
+    <div className="p-5 grid grid-cols-1 gap-4">
+      <h1 className="text-2xl">Donasi & Dukungan</h1>
+      {isLoading && <p>Loading...</p>}
+      {!isLoading && donations.length > 0 && (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          {donations.map((donation, key) => (
+            <div key={key} className="bg-gray-100 p-3 border">
+              <div className="flex justify-between gap-2">
+                <p className="w-full break-all">
+                  Dari: {donation.donator_name}
+                </p>
+                <small
+                  className="cursor-pointer hover:underline text-blue-500"
+                  onClick={() => replayDonation(donation.id)}
+                >
+                  Replay
+                </small>
               </div>
-            ))}
-            <Link
-              href={`/dashboard/donations?cursor=${
-                donations[donations.length - 1].id
-              }`}
-              scroll={false}
-              className="bg-gray-100 md:col-span-2 text-center py-2 border hover:bg-gray-200"
-            >
-              More
-            </Link>
-          </div>
-        )}
-        {!isLoading && donations.length == 0 && <p>Tidak ada data</p>}
-      </div>
-    </MainLayout>
+              <small>Email: {donation.donator_email ?? "-"}</small>
+              <p>Rp {formatRupiah(donation.amount)}</p>
+              <p>&quot;{donation.message}&quot;</p>
+              <small>{formatDate(donation.updated_at)}</small>
+            </div>
+          ))}
+          <Link
+            href={`/dashboard/donations?cursor=${
+              donations[donations.length - 1].id
+            }`}
+            scroll={false}
+            className="bg-gray-100 md:col-span-2 text-center py-2 border hover:bg-gray-200"
+          >
+            More
+          </Link>
+        </div>
+      )}
+      {!isLoading && donations.length == 0 && <p>Tidak ada data</p>}
+    </div>
   );
 };
 
 export default Donations;
+
+Donations.getLayout = (page: ReactElement) => {
+  return <MainLayout>{page}</MainLayout>;
+};

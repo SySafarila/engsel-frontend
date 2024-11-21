@@ -1,13 +1,14 @@
 import MainLayout from "@/components/layouts/MainLayout";
+import { NextPageWithLayout } from "@/pages/_app";
 import { userAtom } from "@/utils/state";
 import axios, { AxiosError } from "axios";
 import { useAtomValue } from "jotai";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { ReactElement, useState } from "react";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 
-const Account = () => {
+const Account: NextPageWithLayout = () => {
   const user = useAtomValue(userAtom);
   const [isSending, setIsSending] = useState<boolean>(false);
   const { register, handleSubmit } = useForm();
@@ -58,74 +59,76 @@ const Account = () => {
   };
 
   return (
-    <MainLayout>
-      <div className="p-5 grid grid-cols-1 gap-4">
-        <h1 className="text-2xl">Pengaturan Akun</h1>
-        {user && (
-          <form
-            className="grid grid-cols-1 md:grid-cols-2 gap-3"
-            onSubmit={handleSubmit(onSubmit)}
-          >
-            <div className="grid grid-cols-1 gap-1 md:col-span-2">
-              <label htmlFor="name">Full Name *Required</label>
-              <input
-                required
-                type="text"
-                className="border py-2 px-3"
-                id="name"
-                placeholder="Full Name"
-                {...register("name", { required: true, value: user?.name })}
-              />
-            </div>
-            <div className="grid grid-cols-1 gap-1 md:col-span-2">
-              <label htmlFor="username">Username *Required</label>
-              <input
-                required
-                type="text"
-                className="border py-2 px-3"
-                id="username"
-                placeholder="Username"
-                {...register("username", {
-                  required: true,
-                  value: user?.username,
-                })}
-              />
-            </div>
-            <div className="grid grid-cols-1 gap-1 md:col-span-2">
-              <label htmlFor="email">Email *Required</label>
-              <input
-                required
-                type="email"
-                className="border py-2 px-3"
-                id="email"
-                placeholder="Email"
-                {...register("email", { required: true, value: user?.email })}
-              />
-            </div>
-            <div className="grid grid-cols-1 gap-1 md:col-span-2">
-              <label htmlFor="password">Password</label>
-              <input
-                type="password"
-                className="border py-2 px-3"
-                id="password"
-                placeholder="Password"
-                {...register("password")}
-              />
-            </div>
-            <div>
-              <button
-                className="bg-green-500 hover:bg-green-600 px-3 py-2 text-white disabled:bg-gray-200 disabled:text-black"
-                type="submit"
-                disabled={isSending}
-              >
-                {isSending ? "Loading..." : "Kirim"}
-              </button>
-            </div>
-          </form>
-        )}
-      </div>
-    </MainLayout>
+    <div className="p-5 grid grid-cols-1 gap-4">
+      <h1 className="text-2xl">Pengaturan Akun</h1>
+      {user && (
+        <form
+          className="grid grid-cols-1 md:grid-cols-2 gap-3"
+          onSubmit={handleSubmit(onSubmit)}
+        >
+          <div className="grid grid-cols-1 gap-1 md:col-span-2">
+            <label htmlFor="name">Full Name *Required</label>
+            <input
+              required
+              type="text"
+              className="border py-2 px-3"
+              id="name"
+              placeholder="Full Name"
+              {...register("name", { required: true, value: user?.name })}
+            />
+          </div>
+          <div className="grid grid-cols-1 gap-1 md:col-span-2">
+            <label htmlFor="username">Username *Required</label>
+            <input
+              required
+              type="text"
+              className="border py-2 px-3"
+              id="username"
+              placeholder="Username"
+              {...register("username", {
+                required: true,
+                value: user?.username,
+              })}
+            />
+          </div>
+          <div className="grid grid-cols-1 gap-1 md:col-span-2">
+            <label htmlFor="email">Email *Required</label>
+            <input
+              required
+              type="email"
+              className="border py-2 px-3"
+              id="email"
+              placeholder="Email"
+              {...register("email", { required: true, value: user?.email })}
+            />
+          </div>
+          <div className="grid grid-cols-1 gap-1 md:col-span-2">
+            <label htmlFor="password">Password</label>
+            <input
+              type="password"
+              className="border py-2 px-3"
+              id="password"
+              placeholder="Password"
+              {...register("password")}
+            />
+          </div>
+          <div>
+            <button
+              className="bg-green-500 hover:bg-green-600 px-3 py-2 text-white disabled:bg-gray-200 disabled:text-black"
+              type="submit"
+              disabled={isSending}
+            >
+              {isSending ? "Loading..." : "Kirim"}
+            </button>
+          </div>
+        </form>
+      )}
+    </div>
   );
 };
 
 export default Account;
+
+Account.getLayout = (page: ReactElement) => {
+  return <MainLayout>{page}</MainLayout>;
+};

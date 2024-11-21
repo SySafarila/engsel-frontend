@@ -2,9 +2,10 @@
 import GuestMainLayout from "@/components/layouts/GuestMainLayout";
 import axios, { AxiosError } from "axios";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import { io } from "socket.io-client";
 import Swal from "sweetalert2";
+import { NextPageWithLayout } from "../_app";
 
 type TransactionDetailResponse = {
   amount: number;
@@ -19,7 +20,7 @@ type TransactionDetailResponse = {
   is_paid: boolean;
 };
 
-const TransactionDetail = () => {
+const TransactionDetail: NextPageWithLayout = () => {
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [donation, setDonation] = useState<TransactionDetailResponse>();
   const router = useRouter();
@@ -174,3 +175,7 @@ const TransactionDetail = () => {
 };
 
 export default TransactionDetail;
+
+TransactionDetail.getLayout = (page: ReactElement) => {
+  return <GuestMainLayout>{page}</GuestMainLayout>;
+};

@@ -1,5 +1,5 @@
 import MainLayout from "@/components/layouts/MainLayout";
-import { formatDate } from "@/utils/formatDate";
+import formatDate from "@/utils/formatDate";
 import formatRupiah from "@/utils/formatRupiah";
 import { Donations as DonationsType } from "@/utils/types";
 import axios, { AxiosError } from "axios";

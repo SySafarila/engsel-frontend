@@ -1,5 +1,5 @@
 import MainLayout from "@/components/layouts/MainLayout";
-import { formatDate } from "@/utils/formatDate";
+import formatDate from "@/utils/formatDate";
 import { userAtom } from "@/utils/state";
 import axios, { AxiosError } from "axios";
 import { useAtom } from "jotai";

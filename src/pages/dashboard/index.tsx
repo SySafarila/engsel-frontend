@@ -31,6 +31,12 @@ const Dashboard: NextPageWithLayout = () => {
           Penarikan
         </Link>
         <Link
+          href="/dashboard/banks"
+          className="bg-gray-100 border p-3 hover:bg-gray-200 text-center flex items-center justify-center"
+        >
+          Bank
+        </Link>
+        <Link
           href="/dashboard/account"
           className="bg-gray-100 border p-3 hover:bg-gray-200 text-center flex items-center justify-center"
         >

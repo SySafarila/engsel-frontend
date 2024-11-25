@@ -17,3 +17,12 @@ export type User = {
   username: string;
   balance: number;
 };
+
+export type Bank = {
+  verified_at: number | null;
+  number: number;
+  bank: string;
+  id: string;
+};
+
+export type Banks = Bank[];

@@ -133,44 +133,40 @@ const TransactionDetail: NextPageWithLayout = () => {
   };
 
   return (
-    <GuestMainLayout>
-      <div className={`p-5 ${!isLoaded && "hidden"}`}>
-        {donation?.qris && (
-          <>
-            <img
-              src={donation.qris}
-              alt="QRIS"
-              className="mx-auto w-full md:w-1/2"
-            />
-            <p className="text-center">
-              Scan QRCODE di atas dengan E-Wallet atau Mobile Bank kalian yang
-              mendukung QRIS
-            </p>
-          </>
-        )}
-        {donation?.virtual_account && (
-          <>
-            <p className="text-center">
-              <span>Bank: </span>
-              <span className="uppercase">{donation.virtual_account.bank}</span>
-            </p>
-            <p className="text-center">
-              <span>Virtual Account: </span>
-              <span className="font-bold">
-                {donation.virtual_account.number}
-              </span>
-            </p>
-          </>
-        )}
-        <p className="text-center font-bold">Nominal Rp {formatAmount()}</p>
-        {donation?.is_paid == false && (
-          <p className="text-center">Bayar sebelum: {formatDate()}</p>
-        )}
-        {donation?.is_paid == true && (
-          <p className="text-center">Transaksi telah dibayar</p>
-        )}
-      </div>
-    </GuestMainLayout>
+    <div className={`p-5 ${!isLoaded && "hidden"}`}>
+      {donation?.qris && (
+        <>
+          <img
+            src={donation.qris}
+            alt="QRIS"
+            className="mx-auto w-full md:w-1/2"
+          />
+          <p className="text-center">
+            Scan QRCODE di atas dengan E-Wallet atau Mobile Bank kalian yang
+            mendukung QRIS
+          </p>
+        </>
+      )}
+      {donation?.virtual_account && (
+        <>
+          <p className="text-center">
+            <span>Bank: </span>
+            <span className="uppercase">{donation.virtual_account.bank}</span>
+          </p>
+          <p className="text-center">
+            <span>Virtual Account: </span>
+            <span className="font-bold">{donation.virtual_account.number}</span>
+          </p>
+        </>
+      )}
+      <p className="text-center font-bold">Nominal Rp {formatAmount()}</p>
+      {donation?.is_paid == false && (
+        <p className="text-center">Bayar sebelum: {formatDate()}</p>
+      )}
+      {donation?.is_paid == true && (
+        <p className="text-center">Transaksi telah dibayar</p>
+      )}
+    </div>
   );
 };
 

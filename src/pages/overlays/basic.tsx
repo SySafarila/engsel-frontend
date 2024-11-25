@@ -24,6 +24,7 @@ const Formula1 = () => {
 
     return () => {
       socket.off("donation");
+      socket.off("connect");
       socket.disconnect();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps

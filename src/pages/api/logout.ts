@@ -1,3 +1,4 @@
+import axios, { AxiosError } from "axios";
 import { serialize } from "cookie";
 import { NextApiRequest, NextApiResponse } from "next";
 
@@ -11,6 +12,15 @@ export default async function handler(
   res: NextApiResponse
 ) {
   try {
+    await axios.post(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/logout`,
+      null,
+      {
+        headers: {
+          Authorization: `Bearer ${req.cookies.access_token}`,
+        },
+      }
+    );
     res
       .status(200)
       .setHeader(
@@ -24,7 +34,13 @@ export default async function handler(
       )
       .json({ message: "Logout success" });
     return;
-  } catch {
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      res
+        .status(error.status ?? 500)
+        .json({ message: error.response?.data.message ?? error.message });
+      return;
+    }
     res.status(401).json({ message: "Failed" });
     return;
   }

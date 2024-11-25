@@ -60,7 +60,7 @@ const User: NextPageWithLayout<{ user: User }> = ({ user }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
 
-  const sendRequest = async (data: SendRequest) => {
+  const sendDonation = async (data: SendRequest) => {
     if (isSending === true) {
       return;
     }
@@ -104,7 +104,7 @@ const User: NextPageWithLayout<{ user: User }> = ({ user }) => {
       </p>
       <form
         className="grid grid-cols-1 md:grid-cols-2 gap-3"
-        onSubmit={handleSubmit(sendRequest)}
+        onSubmit={handleSubmit(sendDonation)}
       >
         <div className="grid grid-cols-1 gap-1 md:col-span-2">
           <label htmlFor="amount">Nominal (Rp)</label>
@@ -200,14 +200,6 @@ User.getLayout = (page: ReactElement) => {
 
 export const getStaticPaths: GetStaticPaths = async () => {
   try {
-    // const users: Users = (
-    //   await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/users`)
-    // ).data;
-    // const paths = users.user.map((user: User) => ({
-    //   params: {
-    //     username: String(user.username),
-    //   },
-    // }));
     const paths: {
       params: {
         username: string;
@@ -236,7 +228,7 @@ export const getStaticProps = async ({
 }) => {
   try {
     let user = await axios.get(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/${params.username}`
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/public/users/${params.username}`
     );
     user = user.data.user;
 
@@ -247,6 +239,7 @@ export const getStaticProps = async ({
       revalidate: 60,
     };
   } catch {
+    console.log(`${params.username} not found`);
     return {
       notFound: true,
       revalidate: 5,

@@ -45,7 +45,6 @@ const Account: NextPageWithLayout = () => {
         }
       );
       const data = res.data as { message: string; data: Banks };
-      console.log(data.data);
       setBanks(data.data);
       setIsLoading(false);
     } catch (error) {
@@ -76,7 +75,7 @@ const Account: NextPageWithLayout = () => {
     <div className="p-5 grid grid-cols-1 gap-4">
       <h1 className="text-2xl">Pengaturan Bank</h1>
       <form onSubmit={handleSubmit(storeBank)} className="flex gap-2 items-end">
-        <div className="grid grid-cols-1 gap-1 md:col-span-2 w-full">
+        <div className="grid grid-cols-1 gap-1 md:col-span-2 w-1/2 md:w-full">
           <label htmlFor="bank">Bank</label>
           <select
             id="bank"

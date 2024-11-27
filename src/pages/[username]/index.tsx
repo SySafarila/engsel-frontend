@@ -228,7 +228,7 @@ export const getStaticProps = async ({
 }) => {
   try {
     let user = await axios.get(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/users/${params.username}`
+      `${process.env.BACKEND_URL}/users/${params.username}`
     );
     user = user.data.user;
 

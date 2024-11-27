@@ -13,7 +13,7 @@ export default async function handler(
 ) {
   try {
     await axios.post(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/logout`,
+      `${process.env.BACKEND_URL}/auth/logout`,
       null,
       {
         headers: {

@@ -166,7 +166,24 @@ const Withdraws: NextPageWithLayout = () => {
         {currentWithdraws.map((wd, index) => (
           <div key={index} className="bg-gray-100 p-3 border">
             <p>Jumlah: {wd.amount}</p>
-            <p>Status: {wd.is_pending ? "Pending" : "Sukses"}</p>
+            <p>
+              Status:{" "}
+              {wd.is_pending ? (
+                "Pending"
+              ) : (
+                <span>
+                  Sukses{" "}
+                  <a
+                    href={`${process.env.NEXT_PUBLIC_BACKEND_URL}/withdraws/${wd.id}/image`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-500 hover:underline"
+                  >
+                    Lihat Gambar
+                  </a>
+                </span>
+              )}
+            </p>
             <small>{formatDate(wd.created_at)}</small>
           </div>
         ))}

@@ -29,6 +29,14 @@ COPY . .
 # Uncomment the following line in case you want to disable telemetry during the build.
 # ENV NEXT_TELEMETRY_DISABLED=1
 
+ARG NEXT_PUBLIC_BACKEND_URL
+ARG NEXT_PUBLIC_WEBSOCKET_URL
+ARG JWT_SECRET
+
+ENV NEXT_PUBLIC_BACKEND_URL=${NEXT_PUBLIC_BACKEND_URL}
+ENV NEXT_PUBLIC_WEBSOCKET_URL=${NEXT_PUBLIC_WEBSOCKET_URL}
+ENV JWT_SECRET=${JWT_SECRET}
+
 RUN \
   if [ -f yarn.lock ]; then yarn run build; \
   elif [ -f package-lock.json ]; then npm run build; \
@@ -59,7 +67,6 @@ USER nextjs
 EXPOSE 3000
 
 ENV PORT=3000
-ENV NEXT_PUBLIC_BACKEND_URL="http://localhost:3000"
 
 # server.js is created by next build from the standalone output
 # https://nextjs.org/docs/pages/api-reference/next-config-js/output

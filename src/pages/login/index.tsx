@@ -20,19 +20,18 @@ const Login: NextPageWithLayout = () => {
     setIsSending(true);
 
     try {
-      const res = await axios.post(
+      await axios.post(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/login`,
         {
           email: data.email,
           password: data.password,
+        },
+        {
+          withCredentials: true,
         }
       );
 
       setIsSending(false);
-
-      await axios.post("/api/save-login", {
-        access_token: res.data.token,
-      });
 
       await Swal.fire({
         icon: "success",

@@ -18,15 +18,13 @@ const Overlay: NextPageWithLayout = () => {
     }
   }, [router.isReady]);
 
-  const copyBasicOverlay = async () => {
+  const copyOverlay = async (url: string) => {
     try {
-      await navigator.clipboard.writeText(
-        `${origin}/overlays/basic?streamkey=${user?.id}`
-      );
+      await navigator.clipboard.writeText(url);
       Swal.fire({
         icon: "success",
         title: "Sukses",
-        text: "Basic Overlay Berhasil Dicopy",
+        text: "Overlay Berhasil Dicopy",
       });
     } catch (error) {
       if (error instanceof Error) {
@@ -63,10 +61,9 @@ const Overlay: NextPageWithLayout = () => {
       <div className="gris grid-cols-1 gap-3">
         <div className="bg-gray-100 p-3 border">
           <p>Overlay Basic</p>
-          {/* <p>{`${origin}/overlays/basic/${user?.id}`}</p> */}
           {user && origin && (
             <iframe
-              src={`${origin}/overlays/basic?streamkey=${user?.id}`}
+              src={`${origin}/overlays/basic?streamkey=${user?.id}&preview=true`}
               className="w-full"
             ></iframe>
           )}
@@ -74,7 +71,9 @@ const Overlay: NextPageWithLayout = () => {
             <button
               type="button"
               className="bg-yellow-400 hover:bg-yellow-500 py-2"
-              onClick={copyBasicOverlay}
+              onClick={() =>
+                copyOverlay(`${origin}/overlays/basic?streamkey=${user?.id}`)
+              }
             >
               Copy Link
             </button>

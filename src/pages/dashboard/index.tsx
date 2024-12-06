@@ -28,7 +28,7 @@ const Dashboard: NextPageWithLayout = () => {
           href="/dashboard/withdraws?is_pending=true"
           className="bg-gray-100 border p-3 hover:bg-gray-200 text-center flex items-center justify-center"
         >
-          Penarikan
+          Penarikan / Cash Out
         </Link>
         <Link
           href="/dashboard/banks"

@@ -4,6 +4,7 @@ import { Banks } from "@/utils/types";
 import axios, { AxiosError } from "axios";
 import { ReactElement, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import Swal from "sweetalert2";
 
 const Account: NextPageWithLayout = () => {
   const [banks, setBanks] = useState<Banks>([]);
@@ -28,10 +29,20 @@ const Account: NextPageWithLayout = () => {
           withCredentials: true,
         }
       );
+      Swal.fire({
+        icon: "success",
+        title: "Sukses",
+        text: "Bank berhasil ditambahkan dan menunggu verifikasi",
+      });
       await getBanks();
     } catch (error) {
       if (error instanceof AxiosError) {
         console.error(error);
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: error.response?.data.message ?? error.message,
+        });
       }
     }
   };
@@ -62,6 +73,11 @@ const Account: NextPageWithLayout = () => {
     try {
       await axios.delete(`${process.env.NEXT_PUBLIC_BACKEND_URL}/banks/${id}`, {
         withCredentials: true,
+      });
+      Swal.fire({
+        icon: "success",
+        title: "Sukses",
+        text: "Bank berhasil dihapus",
       });
       await getBanks();
     } catch (error) {

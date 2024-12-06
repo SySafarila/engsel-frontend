@@ -1,6 +1,6 @@
 import Queue from "@/utils/Queue";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { io } from "socket.io-client";
 
 const Formula1 = () => {
@@ -8,12 +8,15 @@ const Formula1 = () => {
   const socket = io(`${process.env.NEXT_PUBLIC_WEBSOCKET_URL}/donations`, {
     autoConnect: false,
   });
+  const donationRef = useRef(null);
 
   useEffect(() => {
     if (router.isReady) {
       const queue = new Queue();
 
-      socket.connect();
+      if (!router.query.preview) {
+        socket.connect();
+      }
 
       socket.on("connect", () => {
         socket.emit("join", router.query.streamkey);
@@ -30,10 +33,27 @@ const Formula1 = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.isReady]);
 
+  useEffect(() => {
+    if (
+      router.isReady &&
+      router.query.preview == "true" &&
+      donationRef.current
+    ) {
+      const el: HTMLElement = donationRef.current;
+      setInterval(() => {
+        el.classList.toggle("hidden");
+      }, 2000);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.isReady]);
+
   return (
     <div
-      className="border border-black p-3 bg-[#faae2b] m-2 hidden"
+      className={`border border-black p-3 bg-[#faae2b] m-2 ${
+        router.query.preview == "true" ? "" : "hidden"
+      }`}
       id="donation"
+      ref={donationRef}
     >
       <p className="text-center">
         <span id="donatorName" className="font-semibold text-[#744fc9]">

@@ -12,7 +12,7 @@ type Css = {
   text_color_highlight: string;
 };
 
-const Formula1 = ({ css }: { css: Css }) => {
+const Formula1 = ({ css }: { css: Css | null }) => {
   const router = useRouter();
   const socket = io(`${process.env.NEXT_PUBLIC_WEBSOCKET_URL}/donations`, {
     autoConnect: false,
@@ -71,7 +71,7 @@ const Formula1 = ({ css }: { css: Css }) => {
         `color: ${css.text_color_highlight} !important;`
       );
     }
-  }, [css]);
+  }, [css, isConnected]);
 
   return (
     <>
@@ -107,6 +107,12 @@ const Formula1 = ({ css }: { css: Css }) => {
 };
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
+  if (!context.query.streamkey) {
+    return {
+      notFound: true,
+    };
+  }
+
   try {
     const res = await axios.get(
       `${process.env.NEXT_PUBLIC_BACKEND_URL}/settings/overlays/basic`,

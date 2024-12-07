@@ -1,56 +1,44 @@
 import Queue from "@/utils/Queue";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
+import { GetServerSidePropsContext } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import { io } from "socket.io-client";
 
-const Formula1 = () => {
+type Css = {
+  background: string;
+  border_color: string;
+  text_color: string;
+  text_color_highlight: string;
+};
+
+const Formula1 = ({ css }: { css: Css }) => {
   const router = useRouter();
   const socket = io(`${process.env.NEXT_PUBLIC_WEBSOCKET_URL}/donations`, {
     autoConnect: false,
   });
-  const [css, setCss] = useState<{
-    background: string;
-    border_color: string;
-    text_color: string;
-    text_color_highlight: string;
-  }>();
-  const [settingLoaded, setSettingLoaded] = useState(false);
   const donationRef = useRef(null);
-
-  const getBasicOverlaySetting = async () => {
-    console.log("Get setting");
-
-    try {
-      const res = await axios.get(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/settings/overlays/basic`,
-        {
-          params: {
-            streamkey: router.query.streamkey,
-          },
-        }
-      );
-      setSettingLoaded(true);
-      setCss(res.data.data.value);
-    } catch (error) {
-      setSettingLoaded(true);
-      if (error instanceof AxiosError) {
-        console.error(error.status, error.response?.data.message);
-      }
-    }
-  };
+  const [isConnected, setIsConnected] = useState<boolean>(false);
 
   useEffect(() => {
     if (router.isReady) {
-      getBasicOverlaySetting();
       const queue = new Queue();
 
       if (!router.query.preview) {
         socket.connect();
       }
 
+      if (router.query.preview == "true") {
+        setIsConnected(true);
+      }
+
       socket.on("connect", () => {
+        setIsConnected(true);
         socket.emit("join", router.query.streamkey);
+
+        socket.on("disconnect", () => {
+          setIsConnected(false);
+        });
       });
 
       socket.on("donation", queue.incomingDonation);
@@ -59,23 +47,9 @@ const Formula1 = () => {
     return () => {
       socket.off("donation");
       socket.off("connect");
+      socket.off("disconnect");
       socket.disconnect();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [router.isReady]);
-
-  // useEffect for preview
-  useEffect(() => {
-    if (
-      router.isReady &&
-      router.query.preview == "true" &&
-      donationRef.current
-    ) {
-      const el: HTMLElement = donationRef.current;
-      setInterval(() => {
-        el.classList.toggle("hidden");
-      }, 2000);
-    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.isReady]);
 
@@ -101,9 +75,14 @@ const Formula1 = () => {
 
   return (
     <>
-      {settingLoaded && (
+      {isConnected === false && (
+        <div className="border p-3 py-2 border-black bg-white m-2">
+          <p>Connecting...</p>
+        </div>
+      )}
+      {isConnected === true && (
         <div
-          className={`border border-black p-3 bg-[#faae2b] m-2 ${
+          className={`border-2 border-black p-3 bg-[#faae2b] m-2 ${
             router.query.preview == "true" ? "" : "hidden"
           }`}
           id="donation"
@@ -126,5 +105,30 @@ const Formula1 = () => {
     </>
   );
 };
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  try {
+    const res = await axios.get(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/settings/overlays/basic`,
+      {
+        params: {
+          streamkey: context.query.streamkey,
+        },
+      }
+    );
+    const css = res.data.data.value as Css;
+    return {
+      props: {
+        css: css,
+      },
+    };
+  } catch {
+    return {
+      props: {
+        css: null,
+      },
+    };
+  }
+}
 
 export default Formula1;

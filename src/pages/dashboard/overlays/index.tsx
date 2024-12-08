@@ -67,7 +67,7 @@ const Overlay: NextPageWithLayout = () => {
               className="w-full"
             ></iframe>
           )}
-          <div className="grid grid-cols-3 gap-2">
+          <div className="grid grid-cols-4 gap-2">
             <button
               type="button"
               className="bg-yellow-400 hover:bg-yellow-500 py-2"
@@ -91,6 +91,13 @@ const Overlay: NextPageWithLayout = () => {
               onClick={testDonation}
             >
               Test
+            </button>
+            <button
+              type="button"
+              className="bg-yellow-400 hover:bg-yellow-500 py-2"
+              onClick={() => router.push("/dashboard/overlays/basic/setting")}
+            >
+              Pengaturan
             </button>
           </div>
         </div>

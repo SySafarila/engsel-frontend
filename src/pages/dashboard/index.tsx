@@ -19,7 +19,7 @@ const Dashboard: NextPageWithLayout = () => {
           Donasi & Dukungan Masuk
         </Link>
         <Link
-          href="/dashboard/overlay"
+          href="/dashboard/overlays"
           className="bg-gray-100 border p-3 hover:bg-gray-200 text-center flex items-center justify-center"
         >
           Overlay Untuk OBS & Streamlabs

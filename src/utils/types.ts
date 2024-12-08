@@ -26,3 +26,10 @@ export type Bank = {
 };
 
 export type Banks = Bank[];
+
+export type OverlayBasicCss = {
+  background: string;
+  border_color: string;
+  text_color: string;
+  text_color_highlight: string;
+};

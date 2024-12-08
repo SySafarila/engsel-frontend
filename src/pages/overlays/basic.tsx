@@ -1,18 +1,12 @@
 import Queue from "@/utils/Queue";
+import { OverlayBasicCss } from "@/utils/types";
 import axios from "axios";
 import { GetServerSidePropsContext } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import { io } from "socket.io-client";
 
-type Css = {
-  background: string;
-  border_color: string;
-  text_color: string;
-  text_color_highlight: string;
-};
-
-const Formula1 = ({ css }: { css: Css | null }) => {
+const Formula1 = ({ css }: { css: OverlayBasicCss | null }) => {
   const router = useRouter();
   const socket = io(`${process.env.NEXT_PUBLIC_WEBSOCKET_URL}/donations`, {
     autoConnect: false,
@@ -92,12 +86,14 @@ const Formula1 = ({ css }: { css: Css | null }) => {
             <span id="donatorName" className="font-semibold text-[#744fc9]">
               Syahrul
             </span>{" "}
-            <span id="templateText">baru saja memberikan </span>
+            <span className="text-black" id="templateText">
+              baru saja memberikan{" "}
+            </span>
             <span className="font-semibold text-[#744fc9]" id="amount">
               Rp 20,000
             </span>
           </p>
-          <p className="text-center" id="message">
+          <p className="text-center text-black" id="message">
             Halo bang
           </p>
         </div>
@@ -122,7 +118,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
         },
       }
     );
-    const css = res.data.data.value as Css;
+    const css = res.data.data.value as OverlayBasicCss;
     return {
       props: {
         css: css,

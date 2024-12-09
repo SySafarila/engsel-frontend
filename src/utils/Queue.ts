@@ -1,4 +1,5 @@
 import Dom from "./Dom";
+import formatRupiah from "./formatRupiah";
 import Sound from "./Sound";
 import { Donation, Donations } from "./types";
 
@@ -6,14 +7,11 @@ export default class Queue {
   private isPlaying: boolean = false;
   private queue: Donations = [];
   private sound = new Sound();
-  private DOM = new Dom();
+  private DOM: Dom | undefined = undefined;
 
-  constructor() {
+  constructor({ DOM }: { DOM: Dom }) {
     console.log("Queue init");
-  }
-
-  private numberFormat(amount: number): string {
-    return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    this.DOM = DOM;
   }
 
   private addDelay(ms: number): Promise<unknown> {
@@ -27,24 +25,24 @@ export default class Queue {
   private async startQueue() {
     console.count(
       `Showing donation from ${
-        this.getDonation().donator_name
-      }, Rp ${this.numberFormat(this.getDonation().amount)}`
+        this.getFirstDonation().donator_name
+      }, Rp ${formatRupiah(this.getFirstDonation().amount)}`
     );
 
     this.isPlaying = true;
 
-    this.DOM.format({
-      amount: `Rp ${this.numberFormat(this.getDonation().amount)}`,
-      donatorName: this.getDonation().donator_name,
-      message: this.getDonation().message,
-      templateText: "baru saja memberikan ",
+    this.DOM?.formatMessage({
+      amount: `Rp ${formatRupiah(this.getFirstDonation().amount)}`,
+      donatorName: this.getFirstDonation().donator_name,
+      message: this.getFirstDonation().message,
+      templateText: "baru saja memberikan",
     });
-    this.DOM.showDonation();
+    this.DOM?.showDonation();
 
     await this.sound.playSound("cash");
     await this.addDelay(5000);
 
-    this.DOM.hideDonation();
+    this.DOM?.hideDonation();
     this.deletePlayedQueue();
     await this.addDelay(1000);
 
@@ -60,7 +58,7 @@ export default class Queue {
     }
   }
 
-  private getDonation(): Donation {
+  private getFirstDonation(): Donation {
     return this.queue[0];
   }
 

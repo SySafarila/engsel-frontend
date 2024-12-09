@@ -33,3 +33,10 @@ export type OverlayBasicCss = {
   text_color: string;
   text_color_highlight: string;
 };
+
+export type DomFormat = {
+  donatorName: string;
+  templateText: string;
+  message: string;
+  amount: string;
+};

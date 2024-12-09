@@ -1,26 +1,21 @@
-type Format = {
-  donatorName: string;
-  templateText: string;
-  message: string;
-  amount: string;
-};
+import { DomFormat } from "./types";
 
 export default class Dom {
-  hideDonation() {
-    const el = document.getElementById("donation");
-    if (el && el.classList.contains("hidden") == false) {
-      el.classList.add("hidden");
+  hideDonation(): void {
+    const donation = document.getElementById("donation");
+    if (donation && donation.classList.contains("hidden") == false) {
+      donation.classList.add("hidden");
     }
   }
 
-  showDonation() {
-    const el = document.getElementById("donation");
-    if (el && el.classList.contains("hidden") == true) {
-      el.classList.remove("hidden");
+  showDonation(): void {
+    const donation = document.getElementById("donation");
+    if (donation && donation.classList.contains("hidden") == true) {
+      donation.classList.remove("hidden");
     }
   }
 
-  format(data: Format) {
+  formatMessage(data: DomFormat): void {
     const donatorName = document.getElementById("donatorName");
     const templateText = document.getElementById("templateText");
     const message = document.getElementById("message");

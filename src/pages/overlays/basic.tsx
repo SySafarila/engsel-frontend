@@ -1,3 +1,4 @@
+import Dom from "@/utils/Dom";
 import Queue from "@/utils/Queue";
 import { OverlayBasicCss } from "@/utils/types";
 import axios from "axios";
@@ -16,7 +17,9 @@ const Formula1 = ({ css }: { css: OverlayBasicCss | null }) => {
 
   useEffect(() => {
     if (router.isReady) {
-      const queue = new Queue();
+      const queue = new Queue({
+        DOM: new Dom(),
+      });
 
       if (!router.query.preview) {
         socket.connect();
@@ -82,12 +85,12 @@ const Formula1 = ({ css }: { css: OverlayBasicCss | null }) => {
           id="donation"
           ref={donationRef}
         >
-          <p className="text-center">
+          <p className="text-center flex gap-1 justify-center flex-wrap">
             <span id="donatorName" className="font-semibold text-[#744fc9]">
               Syahrul
-            </span>{" "}
+            </span>
             <span className="text-black" id="templateText">
-              baru saja memberikan{" "}
+              baru saja memberikan
             </span>
             <span className="font-semibold text-[#744fc9]" id="amount">
               Rp 20,000

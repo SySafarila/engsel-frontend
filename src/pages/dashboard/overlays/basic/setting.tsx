@@ -1,5 +1,7 @@
 import MainLayout from "@/components/layouts/MainLayout";
+import BasicOverlay from "@/components/overlays/Basic";
 import { NextPageWithLayout } from "@/pages/_app";
+import BasicOverlayUtil from "@/utils/BasicOverlayUtil";
 import { userAtom } from "@/utils/state";
 import { OverlayBasicCss } from "@/utils/types";
 import axios, { AxiosError } from "axios";
@@ -11,7 +13,7 @@ import Swal from "sweetalert2";
 const BasicOverlaySetting: NextPageWithLayout = () => {
   const user = useAtomValue(userAtom);
   const [isSending, setIsSending] = useState(false);
-  const { register, handleSubmit, setValue } = useForm();
+  const { register, handleSubmit, setValue, getValues } = useForm();
 
   useEffect(() => {
     if (user) {
@@ -116,9 +118,15 @@ const BasicOverlaySetting: NextPageWithLayout = () => {
     }
   };
 
+  const previewSetting = () => {
+    const css = getValues() as OverlayBasicCss;
+    BasicOverlayUtil.setStyle(css);
+  };
+
   return (
     <div className="p-5 grid grid-cols-1 gap-4">
       <h1 className="text-2xl">Basic Overlay Setting</h1>
+      <BasicOverlay isPreview={true} />
       <form
         className="grid grid-cols-1 md:grid-cols-2 gap-3"
         onSubmit={handleSubmit(onSubmit)}
@@ -129,6 +137,7 @@ const BasicOverlaySetting: NextPageWithLayout = () => {
             type="color"
             id="background"
             {...register("background", { required: true })}
+            onInput={previewSetting}
           />
         </div>
         <div className="grid grid-cols-1 gap-1 md:col-span-2">
@@ -137,6 +146,7 @@ const BasicOverlaySetting: NextPageWithLayout = () => {
             type="color"
             id="border_color"
             {...register("border_color", { required: true })}
+            onInput={previewSetting}
           />
         </div>
         <div className="grid grid-cols-1 gap-1 md:col-span-2">
@@ -145,6 +155,7 @@ const BasicOverlaySetting: NextPageWithLayout = () => {
             type="color"
             id="text_color"
             {...register("text_color", { required: true })}
+            onInput={previewSetting}
           />
         </div>
         <div className="grid grid-cols-1 gap-1 md:col-span-2">
@@ -153,6 +164,7 @@ const BasicOverlaySetting: NextPageWithLayout = () => {
             type="color"
             id="text_color_highlight"
             {...register("text_color_highlight", { required: true })}
+            onInput={previewSetting}
           />
         </div>
         <div className="flex gap-2">

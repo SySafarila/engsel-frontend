@@ -1,4 +1,5 @@
 import MainLayout from "@/components/layouts/MainLayout";
+import BasicOverlay from "@/components/overlays/Basic";
 import { NextPageWithLayout } from "@/pages/_app";
 import { userAtom } from "@/utils/state";
 import axios, { AxiosError } from "axios";
@@ -59,15 +60,10 @@ const Overlay: NextPageWithLayout = () => {
     <div className="p-5 grid grid-cols-1 gap-4">
       <h1 className="text-2xl">Overlay</h1>
       <div className="gris grid-cols-1 gap-3">
-        <div className="bg-gray-100 p-3 border">
+        <div className="bg-gray-100 p-3 border grid gap-2">
           <p>Overlay Basic</p>
-          {user && origin && (
-            <iframe
-              src={`${origin}/overlays/basic?streamkey=${user?.id}&preview=true`}
-              className="w-full"
-            ></iframe>
-          )}
-          <div className="grid grid-cols-4 gap-2">
+          <BasicOverlay isPreview={true} />
+          <div className="grid grid-cols-3 gap-1">
             <button
               type="button"
               className="bg-yellow-400 hover:bg-yellow-500 py-2"
@@ -94,7 +90,7 @@ const Overlay: NextPageWithLayout = () => {
             </button>
             <button
               type="button"
-              className="bg-yellow-400 hover:bg-yellow-500 py-2"
+              className="bg-yellow-400 hover:bg-yellow-500 py-2 col-span-3"
               onClick={() => router.push("/dashboard/overlays/basic/setting")}
             >
               Pengaturan

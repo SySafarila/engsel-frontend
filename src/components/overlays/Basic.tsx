@@ -24,6 +24,7 @@ const BasicOverlay = (params: Params) => {
 
   useEffect(() => {
     applySetting();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [css]);
 
   const getCurrentSetting = async () => {

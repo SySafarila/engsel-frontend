@@ -42,6 +42,12 @@ const Dashboard: NextPageWithLayout = () => {
         >
           Pengaturan Akun
         </Link>
+        <Link
+          href="/dashboard/donations/setting"
+          className="bg-gray-100 border p-3 hover:bg-gray-200 text-center flex items-center justify-center"
+        >
+          Pengaturan Donasi
+        </Link>
       </div>
     </div>
   );

@@ -1,4 +1,5 @@
 import GuestMainLayout from "@/components/layouts/GuestMainLayout";
+import formatRupiah from "@/utils/formatRupiah";
 import { Donation } from "@/utils/types";
 import axios, { AxiosError } from "axios";
 import { GetStaticPaths } from "next";
@@ -31,7 +32,10 @@ type RequiredRequest = {
   amount: number;
 };
 
-const User: NextPageWithLayout<{ user: User }> = ({ user }) => {
+const User: NextPageWithLayout<{ user: User; minTts: number }> = ({
+  user,
+  minTts,
+}) => {
   const { register, handleSubmit } = useForm();
   const [isSending, setIsSending] = useState<boolean>(false);
   const [latestDonation, setLatestDonation] = useState<Donation | null>(null);
@@ -116,6 +120,7 @@ const User: NextPageWithLayout<{ user: User }> = ({ user }) => {
             placeholder="Nominal"
             {...register("amount", { required: true })}
           />
+          <small>Minimal Rp {formatRupiah(minTts)} untuk Text-To-Speech</small>
         </div>
         <div className="grid grid-cols-1 gap-1">
           <label htmlFor="donator_name">Nama Pengirim</label>
@@ -227,16 +232,18 @@ export const getStaticProps = async ({
   params: { username: string };
 }) => {
   try {
-    let user = await axios.get(
+    const res = await axios.get(
       `${process.env.BACKEND_URL}/users/${params.username}`
     );
-    user = user.data.user;
+    const user = res.data.data.user;
+    const minTts = res.data.data.minTts;
 
     return {
       props: {
         user,
+        minTts,
       },
-      revalidate: 60,
+      revalidate: 30,
     };
   } catch {
     console.log(`${params.username} not found`);

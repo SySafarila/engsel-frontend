@@ -1,8 +1,8 @@
+import ActiveLink from "@/components/ActiveLink";
 import { logout } from "@/utils/logout";
 import { isAuthAtom, userAtom } from "@/utils/state";
 import axios, { AxiosError } from "axios";
 import { useAtom } from "jotai";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import Swal from "sweetalert2";
@@ -78,33 +78,55 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
         id="sidebar"
       >
         <div className="flex flex-col h-screen overflow-y-auto">
-          <Link className="p-3 hover:bg-gray-100" href="/dashboard">
-            Dashboard
-          </Link>
-          <Link className="p-3 hover:bg-gray-100" href="/dashboard/donations">
-            Dukungan
-          </Link>
-          <Link className="p-3 hover:bg-gray-100" href="/dashboard/overlays">
-            Overlay
-          </Link>
-          <Link
+          <ActiveLink
             className="p-3 hover:bg-gray-100"
+            activeClassName="bg-gray-100"
+            href="/dashboard"
+          >
+            Dashboard
+          </ActiveLink>
+          <ActiveLink
+            className="p-3 hover:bg-gray-100"
+            activeClassName="bg-gray-100"
+            href="/dashboard/donations"
+          >
+            Dukungan
+          </ActiveLink>
+          <ActiveLink
+            className="p-3 hover:bg-gray-100"
+            activeClassName="bg-gray-100"
+            href="/dashboard/overlays"
+          >
+            Overlay
+          </ActiveLink>
+          <ActiveLink
+            className="p-3 hover:bg-gray-100"
+            activeClassName="bg-gray-100"
             href="/dashboard/withdraws?is_pending=true"
           >
             Cash-Out
-          </Link>
-          <Link className="p-3 hover:bg-gray-100" href="/dashboard/banks">
-            Bank
-          </Link>
-          <Link
+          </ActiveLink>
+          <ActiveLink
             className="p-3 hover:bg-gray-100"
+            activeClassName="bg-gray-100"
+            href="/dashboard/banks"
+          >
+            Bank
+          </ActiveLink>
+          <ActiveLink
+            className="p-3 hover:bg-gray-100"
+            activeClassName="bg-gray-100"
             href="/dashboard/donations/setting"
           >
             Pengaturan Donasi
-          </Link>
-          <Link className="p-3 hover:bg-gray-100" href="/dashboard/account">
+          </ActiveLink>
+          <ActiveLink
+            className="p-3 hover:bg-gray-100"
+            activeClassName="bg-gray-100"
+            href="/dashboard/account"
+          >
             Pengaturan Akun
-          </Link>
+          </ActiveLink>
           <button
             className="p-3 m-3 rounded bg-red-500 hover:bg-red-600 text-white"
             onClick={logoutNow}

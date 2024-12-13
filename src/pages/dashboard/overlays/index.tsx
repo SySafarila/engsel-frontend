@@ -1,5 +1,5 @@
-import MainLayout from "@/components/layouts/MainLayout";
 import BasicOverlay from "@/components/overlays/Basic";
+import AuthLayout from "@/layouts/Auth";
 import { NextPageWithLayout } from "@/pages/_app";
 import { userAtom } from "@/utils/state";
 import axios, { AxiosError } from "axios";
@@ -105,5 +105,5 @@ const Overlay: NextPageWithLayout = () => {
 export default Overlay;
 
 Overlay.getLayout = (page: ReactElement) => {
-  return <MainLayout>{page}</MainLayout>;
+  return <AuthLayout>{page}</AuthLayout>;
 };

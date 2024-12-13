@@ -1,4 +1,4 @@
-import MainLayout from "@/components/layouts/MainLayout";
+import AuthLayout from "@/layouts/Auth";
 import { NextPageWithLayout } from "@/pages/_app";
 import formatDate from "@/utils/formatDate";
 import { userAtom } from "@/utils/state";
@@ -207,5 +207,5 @@ const Withdraws: NextPageWithLayout = () => {
 export default Withdraws;
 
 Withdraws.getLayout = (page: ReactElement) => {
-  return <MainLayout>{page}</MainLayout>;
+  return <AuthLayout>{page}</AuthLayout>;
 };

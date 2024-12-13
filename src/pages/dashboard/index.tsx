@@ -1,9 +1,9 @@
-import MainLayout from "@/components/layouts/MainLayout";
 import { userAtom } from "@/utils/state";
 import { useAtomValue } from "jotai";
 import Link from "next/link";
 import { ReactElement } from "react";
 import { NextPageWithLayout } from "../_app";
+import AuthLayout from "@/layouts/Auth";
 
 const Dashboard: NextPageWithLayout = () => {
   const user = useAtomValue(userAtom);
@@ -56,5 +56,5 @@ const Dashboard: NextPageWithLayout = () => {
 export default Dashboard;
 
 Dashboard.getLayout = (page: ReactElement) => {
-  return <MainLayout>{page}</MainLayout>;
+  return <AuthLayout>{page}</AuthLayout>;
 };

@@ -1,4 +1,4 @@
-import MainLayout from "@/components/layouts/MainLayout";
+import AuthLayout from "@/layouts/Auth";
 import { NextPageWithLayout } from "@/pages/_app";
 import { userAtom } from "@/utils/state";
 import axios, { AxiosError } from "axios";
@@ -118,7 +118,7 @@ const Account: NextPageWithLayout = () => {
               type="submit"
               disabled={isSending}
             >
-              {isSending ? "Loading..." : "Kirim"}
+              {isSending ? "Loading..." : "Save"}
             </button>
           </div>
         </form>
@@ -130,5 +130,5 @@ const Account: NextPageWithLayout = () => {
 export default Account;
 
 Account.getLayout = (page: ReactElement) => {
-  return <MainLayout>{page}</MainLayout>;
+  return <AuthLayout>{page}</AuthLayout>;
 };

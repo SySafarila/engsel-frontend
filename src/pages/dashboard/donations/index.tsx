@@ -1,4 +1,4 @@
-import MainLayout from "@/components/layouts/MainLayout";
+import AuthLayout from "@/layouts/Auth";
 import { NextPageWithLayout } from "@/pages/_app";
 import formatDate from "@/utils/formatDate";
 import formatRupiah from "@/utils/formatRupiah";
@@ -121,5 +121,5 @@ const Donations: NextPageWithLayout = () => {
 export default Donations;
 
 Donations.getLayout = (page: ReactElement) => {
-  return <MainLayout>{page}</MainLayout>;
+  return <AuthLayout>{page}</AuthLayout>;
 };

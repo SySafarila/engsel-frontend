@@ -23,23 +23,39 @@ export default class Queue {
   }
 
   private async startQueue() {
+    const donate = this.getFirstDonation();
     console.count(
-      `Showing donation from ${
-        this.getFirstDonation().donator_name
-      }, Rp ${formatRupiah(this.getFirstDonation().amount)}`
+      `Showing donation from ${donate.donator_name}, Rp ${formatRupiah(
+        donate.amount
+      )}`
     );
 
     this.isPlaying = true;
 
     this.DOM?.formatMessage({
-      amount: `Rp ${formatRupiah(this.getFirstDonation().amount)}`,
-      donatorName: this.getFirstDonation().donator_name,
-      message: this.getFirstDonation().message,
+      amount: `Rp ${formatRupiah(donate.amount)}`,
+      donatorName: donate.donator_name,
+      message: donate.message,
       templateText: "baru saja memberikan",
     });
     this.DOM?.showDonation();
 
     await this.sound.playSound("cash");
+    if (donate.tts && donate.tts.length > 0) {
+      console.log("playing tts");
+      await this.sound
+        .playTts(`data:audio/mpeg;base64,${donate.tts[0]}`)
+        .catch(() => {
+          console.log("tts[0] fail to play");
+        });
+      await this.addDelay(250);
+      await this.sound
+        .playTts(`data:audio/mpeg;base64,${donate.tts[1]}`)
+        .catch(() => {
+          console.log("tts[1] fail to play");
+        });
+      console.log("tts played");
+    }
     await this.addDelay(5000);
 
     this.DOM?.hideDonation();

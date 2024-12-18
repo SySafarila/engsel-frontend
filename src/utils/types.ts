@@ -6,6 +6,7 @@ export type Donation = {
   donator_email?: string;
   id: string;
   message: string;
+  tts?: string[];
 };
 
 export type Donations = Donation[];

@@ -46,6 +46,10 @@ const Overlay: NextPageWithLayout = () => {
           withCredentials: true,
         }
       );
+      Swal.fire({
+        icon: "success",
+        title: "Sukses",
+      });
     } catch (error) {
       if (error instanceof AxiosError) {
         Swal.fire({

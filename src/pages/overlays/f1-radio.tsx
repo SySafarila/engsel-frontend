@@ -1,12 +1,12 @@
-import BasicOverlay from "@/components/overlays/Basic";
 import Connecting from "@/components/overlays/Connecting";
-import Dom from "@/utils/Dom";
-import Queue from "@/utils/Queue";
+import Radio from "@/components/overlays/F1Radio";
+import DomF1Radio from "@/utils/DomF1Radio";
+import QueueF1Radio from "@/utils/QueueF1Radio";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 
-const Basic = () => {
+const F1Radio = () => {
   const router = useRouter();
   const socket = io(`${process.env.NEXT_PUBLIC_WEBSOCKET_URL}/donations`, {
     autoConnect: false,
@@ -15,8 +15,8 @@ const Basic = () => {
 
   useEffect(() => {
     if (router.isReady) {
-      const queue = new Queue({
-        DOM: new Dom(),
+      const queue = new QueueF1Radio({
+        DOM: new DomF1Radio(),
       });
 
       if (!router.query.preview) {
@@ -51,9 +51,9 @@ const Basic = () => {
   return (
     <div className="p-2">
       {isConnected === false && <Connecting />}
-      {isConnected === true && <BasicOverlay />}
+      {isConnected === true && <Radio />}
     </div>
   );
 };
 
-export default Basic;
+export default F1Radio;

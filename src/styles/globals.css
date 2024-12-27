@@ -1,3 +1,252 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+    .bg-message {
+        background: rgb(13, 17, 25);
+        background: linear-gradient(0deg, rgba(13, 17, 25, 1) 90%, rgba(60, 60, 66, 1) 100%);
+    }
+
+    .bg-driver {
+        background: rgb(13, 17, 25);
+        background: linear-gradient(0deg, rgba(13, 17, 25, 1) 73%, rgba(60, 60, 66, 1) 100%);
+    }
+
+    .audio-visual {
+        height: 4rem;
+    }
+
+    .audio-visual>div {
+        height: 5%;
+        width: 100%;
+        position: relative;
+    }
+
+    .audio-visual>div::before {
+        content: "";
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        background-color: inherit;
+        filter: blur(40px);
+    }
+}
+
+#radio {
+    @apply overflow-hidden;
+}
+
+#radio #constructor {
+    @apply hidden h-8;
+}
+
+/* ferrari */
+#radio.ferrari #driver-name {
+    @apply text-ferrari;
+}
+
+#radio.ferrari #constructor[data-constructor="ferrari"] {
+    @apply block;
+}
+
+#radio.ferrari #message {
+    @apply text-ferrari;
+}
+
+#radio.ferrari #audio-visual div {
+    @apply bg-ferrari;
+}
+
+#radio.ferrari hr {
+    @apply border-t-2 border-ferrari;
+}
+
+/* mercedes */
+#radio.mercedes #driver-name {
+    @apply text-mercedes;
+}
+
+#radio.mercedes #constructor[data-constructor="mercedes"] {
+    @apply block;
+}
+
+#radio.mercedes #message {
+    @apply text-mercedes;
+}
+
+#radio.mercedes #audio-visual div {
+    @apply bg-mercedes;
+}
+
+#radio.mercedes hr {
+    @apply border-t-2 border-mercedes;
+}
+
+/* redbull */
+#radio.redbull #driver-name {
+    @apply text-redbull;
+}
+
+#radio.redbull #constructor[data-constructor="redbull"] {
+    @apply block;
+}
+
+#radio.redbull #message {
+    @apply text-redbull;
+}
+
+#radio.redbull #audio-visual div {
+    @apply bg-redbull;
+}
+
+#radio.redbull hr {
+    @apply border-t-2 border-redbull;
+}
+
+/* mclaren */
+#radio.mclaren #driver-name {
+    @apply text-mclaren;
+}
+
+#radio.mclaren #constructor[data-constructor="mclaren"] {
+    @apply block;
+}
+
+#radio.mclaren #message {
+    @apply text-mclaren;
+}
+
+#radio.mclaren #audio-visual div {
+    @apply bg-mclaren;
+}
+
+#radio.mclaren hr {
+    @apply border-t-2 border-mclaren;
+}
+
+/* aston-martin */
+#radio.aston-martin #driver-name {
+    @apply text-aston-martin;
+}
+
+#radio.aston-martin #constructor[data-constructor="aston-martin"] {
+    @apply block p-1;
+}
+
+#radio.aston-martin #message {
+    @apply text-aston-martin;
+}
+
+#radio.aston-martin #audio-visual div {
+    @apply bg-aston-martin;
+}
+
+#radio.aston-martin hr {
+    @apply border-t-2 border-aston-martin;
+}
+
+/* haas */
+#radio.haas #driver-name {
+    @apply text-haas;
+}
+
+#radio.haas #constructor[data-constructor="haas"] {
+    @apply block;
+}
+
+#radio.haas #message {
+    @apply text-haas;
+}
+
+#radio.haas #audio-visual div {
+    @apply bg-haas;
+}
+
+#radio.haas hr {
+    @apply border-t-2 border-haas;
+}
+
+/* rb */
+#radio.rb #driver-name {
+    @apply text-rb;
+}
+
+#radio.rb #constructor[data-constructor="rb"] {
+    @apply block;
+}
+
+#radio.rb #message {
+    @apply text-rb;
+}
+
+#radio.rb #audio-visual div {
+    @apply bg-rb;
+}
+
+#radio.rb hr {
+    @apply border-t-2 border-rb;
+}
+
+/* williams */
+#radio.williams #driver-name {
+    @apply text-williams;
+}
+
+#radio.williams #constructor[data-constructor="williams"] {
+    @apply block p-1;
+}
+
+#radio.williams #message {
+    @apply text-williams;
+}
+
+#radio.williams #audio-visual div {
+    @apply bg-williams;
+}
+
+#radio.williams hr {
+    @apply border-t-2 border-williams;
+}
+
+/* alpine */
+#radio.alpine #driver-name {
+    @apply text-alpine;
+}
+
+#radio.alpine #constructor[data-constructor="alpine"] {
+    @apply block p-1;
+}
+
+#radio.alpine #message {
+    @apply text-alpine;
+}
+
+#radio.alpine #audio-visual div {
+    @apply bg-alpine;
+}
+
+#radio.alpine hr {
+    @apply border-t-2 border-alpine;
+}
+
+/* sauber */
+#radio.sauber #driver-name {
+    @apply text-sauber;
+}
+
+#radio.sauber #constructor[data-constructor="sauber"] {
+    @apply block;
+}
+
+#radio.sauber #message {
+    @apply text-sauber;
+}
+
+#radio.sauber #audio-visual div {
+    @apply bg-sauber;
+}
+
+#radio.sauber hr {
+    @apply border-t-2 border-sauber;
+}

@@ -4,17 +4,17 @@ import Sound from "./Sound";
 import { Donation, Donations } from "./types";
 
 export default class Queue {
-  private isPlaying: boolean = false;
-  private queue: Donations = [];
-  private sound = new Sound();
-  private DOM: Dom | undefined = undefined;
+  protected isPlaying: boolean = false;
+  protected queue: Donations = [];
+  protected sound = new Sound();
+  protected DOM: Dom | undefined = undefined;
 
   constructor({ DOM }: { DOM: Dom }) {
     console.log("Queue init");
     this.DOM = DOM;
   }
 
-  private addDelay(ms: number): Promise<unknown> {
+  protected addDelay(ms: number): Promise<unknown> {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve(`Delay in ${ms} milliseconds success!`);
@@ -22,7 +22,7 @@ export default class Queue {
     });
   }
 
-  private async startQueue() {
+  protected async startQueue() {
     const donate = this.getFirstDonation();
     console.count(
       `Showing donation from ${donate.donator_name}, Rp ${formatRupiah(
@@ -67,18 +67,18 @@ export default class Queue {
     }
   }
 
-  private deletePlayedQueue(): void {
+  protected deletePlayedQueue(): void {
     if (this.queue.length >= 1) {
       this.isPlaying = false;
       this.queue.splice(0, 1);
     }
   }
 
-  private getFirstDonation(): Donation {
+  protected getFirstDonation(): Donation {
     return this.queue[0];
   }
 
-  private addQueue(donation: Donation): void {
+  protected addQueue(donation: Donation): void {
     this.queue.push(donation);
 
     if (this.isPlaying === false) {

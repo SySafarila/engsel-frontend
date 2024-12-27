@@ -1,4 +1,5 @@
 import BasicOverlay from "@/components/overlays/Basic";
+import F1Radio from "@/components/overlays/F1Radio";
 import AuthLayout from "@/layouts/Auth";
 import { NextPageWithLayout } from "@/pages/_app";
 import { userAtom } from "@/utils/state";
@@ -63,42 +64,87 @@ const Overlay: NextPageWithLayout = () => {
   return (
     <div className="p-5 grid grid-cols-1 gap-4">
       <h1 className="text-2xl">Overlay</h1>
-      <div className="gris grid-cols-1 gap-3">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
         <div className="bg-gray-100 p-3 border grid gap-2">
-          <p>Overlay Basic</p>
-          <BasicOverlay isPreview={true} />
-          <div className="grid grid-cols-3 gap-1">
-            <button
-              type="button"
-              className="bg-yellow-400 hover:bg-yellow-500 py-2"
-              onClick={() =>
-                copyOverlay(`${origin}/overlays/basic?streamkey=${user?.id}`)
-              }
-            >
-              Copy Link
-            </button>
-            <a
-              href={`${origin}/overlays/basic?streamkey=${user?.id}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-yellow-400 hover:bg-yellow-500 text-center py-2"
-            >
-              Buka Tab Baru
-            </a>
-            <button
-              type="button"
-              className="bg-yellow-400 hover:bg-yellow-500 py-2"
-              onClick={testDonation}
-            >
-              Test
-            </button>
-            <button
-              type="button"
-              className="bg-yellow-400 hover:bg-yellow-500 py-2 col-span-3"
-              onClick={() => router.push("/dashboard/overlays/basic/setting")}
-            >
-              Pengaturan
-            </button>
+          <div className="flex flex-col gap-2">
+            <p>Overlay Basic</p>
+            <BasicOverlay isPreview={true} />
+            <div className="grid grid-cols-3 gap-1">
+              <button
+                type="button"
+                className="bg-yellow-400 hover:bg-yellow-500 py-2"
+                onClick={() =>
+                  copyOverlay(`${origin}/overlays/basic?streamkey=${user?.id}`)
+                }
+              >
+                Copy Link
+              </button>
+              <a
+                href={`${origin}/overlays/basic?streamkey=${user?.id}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-yellow-400 hover:bg-yellow-500 text-center py-2"
+              >
+                Buka Tab Baru
+              </a>
+              <button
+                type="button"
+                className="bg-yellow-400 hover:bg-yellow-500 py-2"
+                onClick={testDonation}
+              >
+                Test
+              </button>
+              <button
+                type="button"
+                className="bg-yellow-400 hover:bg-yellow-500 py-2 col-span-3"
+                onClick={() => router.push("/dashboard/overlays/basic/setting")}
+              >
+                Pengaturan
+              </button>
+            </div>
+          </div>
+        </div>
+        <div className="bg-gray-100 p-3 border grid gap-2">
+          <div className="flex flex-col gap-2">
+            <p>Formula 1 Radio</p>
+            <F1Radio isPreview={true} />
+            <div className="grid grid-cols-3 gap-1">
+              <button
+                type="button"
+                className="bg-yellow-400 hover:bg-yellow-500 py-2"
+                onClick={() =>
+                  copyOverlay(
+                    `${origin}/overlays/f1-radio?streamkey=${user?.id}`
+                  )
+                }
+              >
+                Copy Link
+              </button>
+              <a
+                href={`${origin}/overlays/f1-radio?streamkey=${user?.id}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-yellow-400 hover:bg-yellow-500 text-center py-2"
+              >
+                Buka Tab Baru
+              </a>
+              <button
+                type="button"
+                className="bg-yellow-400 hover:bg-yellow-500 py-2"
+                onClick={testDonation}
+              >
+                Test
+              </button>
+              <button
+                type="button"
+                className="bg-yellow-400 hover:bg-yellow-500 py-2 col-span-3"
+                onClick={() =>
+                  router.push("/dashboard/overlays/f1-radio/setting")
+                }
+              >
+                Pengaturan
+              </button>
+            </div>
           </div>
         </div>
       </div>

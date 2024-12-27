@@ -27,7 +27,7 @@ const F1Radio = (params: Params) => {
             className="uppercase font-f1-bold font-bold text-4xl italic break-words text-right leading-none"
             id="driver-name"
           >
-            Syahrul
+            Leclerc
           </span>
           <div className="flex items-center gap-x-2 w-full justify-end">
             <img

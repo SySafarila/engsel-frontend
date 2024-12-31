@@ -41,3 +41,8 @@ export type DomFormat = {
   message: string;
   amount: string;
 };
+
+export type F1RadioSettings = {
+  driver_name: string;
+  team: string;
+};

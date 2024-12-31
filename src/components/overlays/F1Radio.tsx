@@ -1,3 +1,8 @@
+import F1RadioOverlayUtil from "@/utils/F1RadioOverlayUtil";
+import { userAtom } from "@/utils/state";
+import axios, { AxiosError } from "axios";
+import { useAtomValue } from "jotai";
+import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 /* eslint-disable @next/next/no-img-element */
@@ -5,6 +10,9 @@ type Params = {
   isPreview?: boolean;
 };
 const F1Radio = (params: Params) => {
+  const router = useRouter();
+  const user = useAtomValue(userAtom);
+
   useEffect(() => {
     if (params.isPreview == true) {
       const audioVisuals: NodeListOf<Element> =
@@ -15,6 +23,38 @@ const F1Radio = (params: Params) => {
       });
     }
   }, [params.isPreview]);
+
+  useEffect(() => {
+    if (user || router.isReady) {
+      getCurrentSetting();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, router.isReady]);
+
+  const getCurrentSetting = async () => {
+    try {
+      const res = await axios.get(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/settings/overlays/f1-radio`,
+        {
+          params: {
+            streamkey: router.query.streamkey ?? user?.id,
+          },
+        }
+      );
+      console.log(res.data);
+
+      const settings = res.data.data.value;
+      F1RadioOverlayUtil.setSettings(settings);
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        if (error.response?.data) {
+          console.log(error.response.data.message);
+        } else {
+          console.error(error);
+        }
+      }
+    }
+  };
 
   return (
     <div

@@ -1,15 +1,17 @@
-import ActiveLink from "@/components/ActiveLink";
+import AuthSidebar from "@/components/AuthSidebar";
+import AuthSidebarBackdrop from "@/components/AuthSidebarBackdrop";
+import AuthTopbar from "@/components/AuthTopbar";
 import { logout } from "@/utils/logout";
 import { isAuthAtom, userAtom } from "@/utils/state";
 import axios, { AxiosError } from "axios";
 import { useAtom } from "jotai";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import Swal from "sweetalert2";
 
 const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   const [isAuth, setIsAuth] = useAtom(isAuthAtom);
   const [, setUser] = useAtom(userAtom);
+  const router = useRouter();
 
   const getCurrentUser = async () => {
     if (isAuth === true) {
@@ -51,103 +53,18 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
     getCurrentUser();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  const router = useRouter();
-
-  const logoutNow = async () => {
-    try {
-      await logout();
-      await Swal.fire({
-        icon: "success",
-        title: "Logout success",
-      });
-      router.reload();
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        Swal.fire({
-          icon: "error",
-          title: error.message,
-        });
-      }
-    }
-  };
 
   return (
     <>
-      <div
-        className="bg-white border-r fixed w-1/2 md:w-60 transform -translate-x-full md:translate-x-0"
-        id="sidebar"
-      >
-        <div className="flex flex-col h-screen overflow-y-auto">
-          <ActiveLink
-            className="p-3 hover:bg-gray-100"
-            activeClassName="bg-gray-100"
-            href="/dashboard"
-          >
-            Dashboard
-          </ActiveLink>
-          <ActiveLink
-            className="p-3 hover:bg-gray-100"
-            activeClassName="bg-gray-100"
-            href="/dashboard/donations"
-          >
-            Dukungan
-          </ActiveLink>
-          <ActiveLink
-            className="p-3 hover:bg-gray-100"
-            activeClassName="bg-gray-100"
-            href="/dashboard/overlays"
-          >
-            Overlay
-          </ActiveLink>
-          <ActiveLink
-            className="p-3 hover:bg-gray-100"
-            activeClassName="bg-gray-100"
-            href="/dashboard/withdraws?is_pending=true"
-          >
-            Cash-Out
-          </ActiveLink>
-          <ActiveLink
-            className="p-3 hover:bg-gray-100"
-            activeClassName="bg-gray-100"
-            href="/dashboard/banks"
-          >
-            Bank
-          </ActiveLink>
-          <ActiveLink
-            className="p-3 hover:bg-gray-100"
-            activeClassName="bg-gray-100"
-            href="/dashboard/donations/setting"
-          >
-            Pengaturan Donasi
-          </ActiveLink>
-          <ActiveLink
-            className="p-3 hover:bg-gray-100"
-            activeClassName="bg-gray-100"
-            href="/dashboard/account"
-          >
-            Pengaturan Akun
-          </ActiveLink>
-          <button
-            className="p-3 m-3 rounded bg-red-500 hover:bg-red-600 text-white"
-            onClick={logoutNow}
-          >
-            Logout
-          </button>
-        </div>
-      </div>
-      <div
-        className="bg-white border-b p-5 flex justify-between fixed w-full top-0 md:hidden"
-        id="topbar"
-      >
-        <button>Logo</button>
-        <button>Menu</button>
-      </div>
+      <AuthSidebar />
+      <AuthTopbar />
       <main id="main" className="md:ml-60 mt-[65px] md:mt-0">
         {children}
       </main>
       <footer className="md:ml-60 p-5" id="footer">
         <p className="text-center">&copy; Engsel 2024</p>
       </footer>
+      <AuthSidebarBackdrop />
     </>
   );
 };

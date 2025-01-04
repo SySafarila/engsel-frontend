@@ -66,25 +66,37 @@ const Account: NextPageWithLayout = () => {
   };
 
   const deleteBank = async (id: string) => {
-    const confirmation = confirm("Delete?");
-    if (!confirmation) {
-      return;
-    }
-    try {
-      await axios.delete(`${process.env.NEXT_PUBLIC_BACKEND_URL}/banks/${id}`, {
-        withCredentials: true,
-      });
-      Swal.fire({
-        icon: "success",
-        title: "Sukses",
-        text: "Bank berhasil dihapus",
-      });
-      await getBanks();
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        console.error(error);
+    Swal.fire({
+      icon: "question",
+      title: "Hapus",
+      text: "Apakah anda yakin ingin menghapus bank ini?",
+      showCancelButton: true,
+      confirmButtonText: "Ya",
+      cancelButtonText: "Tidak",
+    }).then(async (res) => {
+      if (res.isConfirmed) {
+        try {
+          await axios.delete(
+            `${process.env.NEXT_PUBLIC_BACKEND_URL}/banks/${id}`,
+            {
+              withCredentials: true,
+            }
+          );
+          Swal.fire({
+            icon: "success",
+            title: "Sukses",
+            text: "Bank berhasil dihapus",
+          });
+          await getBanks();
+        } catch (error) {
+          if (error instanceof AxiosError) {
+            console.error(error);
+          }
+        }
+      } else {
+        return;
       }
-    }
+    });
   };
 
   return (

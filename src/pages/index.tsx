@@ -5,7 +5,10 @@ export default function Home() {
   return (
     <GuestMainLayout>
       <div className="p-5">
-        <p>Selamat datang di Engsel, blablablablablabla</p>
+        <p>
+          Selamat datang di {process.env.NEXT_PUBLIC_BRAND_NAME},
+          blablablablablabla
+        </p>
         <div className="flex justify-center gap-2 mt-3">
           <Link
             href="/login"

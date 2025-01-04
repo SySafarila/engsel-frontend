@@ -62,7 +62,7 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
         {children}
       </main>
       <footer className="md:ml-60 p-5" id="footer">
-        <p className="text-center">&copy; Engsel 2024</p>
+        <p className="text-center">&copy; {process.env.NEXT_PUBLIC_BRAND_NAME} 2024</p>
       </footer>
       <AuthSidebarBackdrop />
     </>

@@ -10,7 +10,13 @@ const Register: NextPageWithLayout = () => {
   const [isSending, setIsSending] = useState<boolean>(false);
   const router = useRouter();
 
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    getValues,
+    formState: { errors },
+  } = useForm();
 
   const onSubmit = async (data: {
     email?: string;
@@ -26,10 +32,10 @@ const Register: NextPageWithLayout = () => {
 
     try {
       await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/register`, {
-        email: data.email,
+        email: data.email?.toLowerCase(),
         password: data.password,
         name: data.name,
-        username: data.username,
+        username: data.username?.toLowerCase(),
       });
 
       setIsSending(false);
@@ -79,8 +85,37 @@ const Register: NextPageWithLayout = () => {
             className="border py-2 px-3"
             id="username"
             placeholder="username"
-            {...register("username", { required: true })}
+            {...register("username", {
+              required: true,
+              pattern: /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/,
+              onBlur: () =>
+                setValue("username", getValues("username").toLowerCase()),
+            })}
           />
+          {errors.username?.type === "pattern" && (
+            <>
+              <span className="text-red-500 text-xs">
+                Username tidak valid, peraturan untuk username harus meliputi:
+              </span>
+              <ol className="list-decimal list-inside text-red-500">
+                <li className="text-xs">
+                  Tidak boleh mengandung dua titik berturut-turut (..)
+                </li>
+                <li className="text-xs">
+                  Tidak boleh diakhiri dengan titik (.)
+                </li>
+                <li className="text-xs">
+                  Harus diawali dengan karakter huruf, angka, atau underscore
+                </li>
+                <li className="text-xs">
+                  Hanya boleh mengandung huruf, angka, titik, atau underscore
+                </li>
+                <li className="text-xs">
+                  Panjang username maksimal 30 karakter
+                </li>
+              </ol>
+            </>
+          )}
         </div>
         <div className="grid grid-cols-1 gap-1 md:col-span-2">
           <label htmlFor="email">Email</label>
@@ -90,7 +125,10 @@ const Register: NextPageWithLayout = () => {
             className="border py-2 px-3"
             id="email"
             placeholder="Email"
-            {...register("email", { required: true })}
+            {...register("email", {
+              required: true,
+              onBlur: () => setValue("email", getValues("email").toLowerCase()),
+            })}
           />
         </div>
         <div className="grid grid-cols-1 gap-1 md:col-span-2">
@@ -110,7 +148,7 @@ const Register: NextPageWithLayout = () => {
             type="submit"
             disabled={isSending}
           >
-            {isSending ? "Loading..." : "Kirim"}
+            {isSending ? "Loading..." : "Daftar!"}
           </button>
         </div>
       </form>

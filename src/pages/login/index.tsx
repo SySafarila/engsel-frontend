@@ -86,7 +86,7 @@ const Login: NextPageWithLayout = () => {
             type="submit"
             disabled={isSending}
           >
-            {isSending ? "Loading..." : "Kirim"}
+            {isSending ? "Loading..." : "Masuk!"}
           </button>
         </div>
       </form>

@@ -5,6 +5,26 @@ import { ReactElement, useState } from "react";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import { NextPageWithLayout } from "../_app";
+import { Button } from "@/components/ui/button";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import Link from "next/link";
 
 const Register: NextPageWithLayout = () => {
   const [isSending, setIsSending] = useState<boolean>(false);
@@ -61,97 +81,84 @@ const Register: NextPageWithLayout = () => {
 
   return (
     <div className="p-5 grid grid-cols-1 gap-4">
-      <h1 className="text-2xl">Register Page</h1>
-      <form
-        className="grid grid-cols-1 md:grid-cols-2 gap-3"
-        onSubmit={handleSubmit(onSubmit)}
-      >
-        <div className="grid grid-cols-1 gap-1 md:col-span-2">
-          <label htmlFor="name">Name</label>
-          <input
-            required
-            type="text"
-            className="border py-2 px-3"
-            id="name"
-            placeholder="Name"
-            {...register("name", { required: true })}
-          />
-        </div>
-        <div className="grid grid-cols-1 gap-1 md:col-span-2">
-          <label htmlFor="username">Username</label>
-          <input
-            required
-            type="text"
-            className="border py-2 px-3"
-            id="username"
-            placeholder="username"
-            {...register("username", {
-              required: true,
-              pattern: /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/,
-              onBlur: () =>
-                setValue("username", getValues("username").toLowerCase()),
-            })}
-          />
-          {errors.username?.type === "pattern" && (
-            <>
-              <span className="text-red-500 text-xs">
-                Username tidak valid, peraturan untuk username harus meliputi:
-              </span>
-              <ol className="list-decimal list-inside text-red-500">
-                <li className="text-xs">
-                  Tidak boleh mengandung dua titik berturut-turut (..)
-                </li>
-                <li className="text-xs">
-                  Tidak boleh diakhiri dengan titik (.)
-                </li>
-                <li className="text-xs">
-                  Harus diawali dengan karakter huruf, angka, atau underscore
-                </li>
-                <li className="text-xs">
-                  Hanya boleh mengandung huruf, angka, titik, atau underscore
-                </li>
-                <li className="text-xs">
-                  Panjang username maksimal 30 karakter
-                </li>
-              </ol>
-            </>
-          )}
-        </div>
-        <div className="grid grid-cols-1 gap-1 md:col-span-2">
-          <label htmlFor="email">Email</label>
-          <input
-            required
-            type="email"
-            className="border py-2 px-3"
-            id="email"
-            placeholder="Email"
-            {...register("email", {
-              required: true,
-              onBlur: () => setValue("email", getValues("email").toLowerCase()),
-            })}
-          />
-        </div>
-        <div className="grid grid-cols-1 gap-1 md:col-span-2">
-          <label htmlFor="password">Password</label>
-          <input
-            required
-            type="password"
-            className="border py-2 px-3"
-            id="password"
-            placeholder="Password"
-            {...register("password", { required: true })}
-          />
-        </div>
-        <div>
-          <button
-            className="bg-green-500 hover:bg-green-600 px-3 py-2 text-white disabled:bg-gray-200 disabled:text-black"
-            type="submit"
-            disabled={isSending}
-          >
-            {isSending ? "Loading..." : "Daftar!"}
-          </button>
-        </div>
-      </form>
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/">Beranda</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>Daftar</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+      <Card>
+        <CardHeader>
+          <CardTitle>Daftar</CardTitle>
+          <CardDescription>
+            Buat akun kamu dengan mengisi formulir di bawah ini.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit(onSubmit)} id="register-form">
+            <div className="grid w-full items-center gap-4">
+              <div className="flex flex-col space-y-1.5">
+                <Label htmlFor="name">Name</Label>
+                <Input
+                  id="name"
+                  type="text"
+                  placeholder="Nama Lengkap"
+                  {...register("name", { required: true })}
+                />
+              </div>
+              <div className="flex flex-col space-y-1.5">
+                <Label htmlFor="username">Username</Label>
+                <Input
+                  id="username"
+                  type="text"
+                  placeholder="Username"
+                  {...register("username", {
+                    required: true,
+                    pattern: /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/,
+                    onBlur: () =>
+                      setValue("username", getValues("username").toLowerCase()),
+                  })}
+                />
+              </div>
+              <div className="flex flex-col space-y-1.5">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="Email"
+                  {...register("email", {
+                    required: true,
+                    onBlur: () =>
+                      setValue("email", getValues("email").toLowerCase()),
+                  })}
+                />
+              </div>
+              <div className="flex flex-col space-y-1.5">
+                <Label htmlFor="password">Password</Label>
+                <Input
+                  id="password"
+                  type="password"
+                  placeholder="Password"
+                  {...register("password", { required: true })}
+                />
+              </div>
+            </div>
+          </form>
+        </CardContent>
+        <CardFooter className="flex justify-between">
+          <Button variant="outline" asChild>
+            <Link href="/login">Masuk</Link>
+          </Button>
+          <Button type="submit" form="register-form">
+            Daftar!
+          </Button>
+        </CardFooter>
+      </Card>
     </div>
   );
 };

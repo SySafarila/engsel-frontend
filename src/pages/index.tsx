@@ -1,28 +1,10 @@
 import GuestMainLayout from "@/components/layouts/GuestMainLayout";
-import Link from "next/link";
 
 export default function Home() {
   return (
     <GuestMainLayout>
-      <div className="p-5">
-        <p>
-          Selamat datang di {process.env.NEXT_PUBLIC_BRAND_NAME},
-          blablablablablabla
-        </p>
-        <div className="flex justify-center gap-2 mt-3">
-          <Link
-            href="/login"
-            className="bg-white border px-3 py-1 hover:bg-gray-100"
-          >
-            Login
-          </Link>
-          <Link
-            href="/register"
-            className="bg-white border px-3 py-1 hover:bg-gray-100"
-          >
-            Register
-          </Link>
-        </div>
+      <div className="p-5 grid gap-y-5">
+        <p>Selamat datang di {process.env.NEXT_PUBLIC_BRAND_NAME}</p>
       </div>
     </GuestMainLayout>
   );

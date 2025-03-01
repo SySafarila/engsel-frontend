@@ -5,6 +5,26 @@ import { ReactElement, useState } from "react";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import { NextPageWithLayout } from "../_app";
+import { Button } from "@/components/ui/button";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import Link from "next/link";
 
 const Login: NextPageWithLayout = () => {
   const [isSending, setIsSending] = useState<boolean>(false);
@@ -53,43 +73,58 @@ const Login: NextPageWithLayout = () => {
 
   return (
     <div className="p-5 grid grid-cols-1 gap-4">
-      <h1 className="text-2xl">Login Page</h1>
-      <form
-        className="grid grid-cols-1 md:grid-cols-2 gap-3"
-        onSubmit={handleSubmit(onSubmit)}
-      >
-        <div className="grid grid-cols-1 gap-1 md:col-span-2">
-          <label htmlFor="email">Email</label>
-          <input
-            required
-            type="email"
-            className="border py-2 px-3"
-            id="email"
-            placeholder="Email"
-            {...register("email", { required: true })}
-          />
-        </div>
-        <div className="grid grid-cols-1 gap-1 md:col-span-2">
-          <label htmlFor="password">Password</label>
-          <input
-            required
-            type="password"
-            className="border py-2 px-3"
-            id="password"
-            placeholder="Password"
-            {...register("password", { required: true })}
-          />
-        </div>
-        <div>
-          <button
-            className="bg-green-500 hover:bg-green-600 px-3 py-2 text-white disabled:bg-gray-200 disabled:text-black"
-            type="submit"
-            disabled={isSending}
-          >
-            {isSending ? "Loading..." : "Masuk!"}
-          </button>
-        </div>
-      </form>
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/">Beranda</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>Masuk</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+      {/* <h1 className="text-2xl">Login Page</h1> */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Masuk</CardTitle>
+          <CardDescription>
+            Masuk ke akun kamu untuk melihat dukungan dari para penggemar.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit(onSubmit)} id="login-form">
+            <div className="grid w-full items-center gap-4">
+              <div className="flex flex-col space-y-1.5">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="Email"
+                  {...register("email", { required: true })}
+                />
+              </div>
+              <div className="flex flex-col space-y-1.5">
+                <Label htmlFor="password">Password</Label>
+                <Input
+                  id="password"
+                  type="password"
+                  placeholder="Password"
+                  {...register("password", { required: true })}
+                />
+              </div>
+            </div>
+          </form>
+        </CardContent>
+        <CardFooter className="flex justify-between">
+          <Button variant="outline" asChild>
+            <Link href="/register">Daftar</Link>
+          </Button>
+          <Button type="submit" form="login-form">
+            Masuk!
+          </Button>
+        </CardFooter>
+      </Card>
     </div>
   );
 };

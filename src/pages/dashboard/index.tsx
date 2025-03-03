@@ -1,16 +1,36 @@
+import { ThisYearDonationsChart } from "@/components/ThisYearDonationsChart";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import NewAuth from "@/layouts/NewAuth";
 import { userAtom } from "@/utils/state";
 import { useAtomValue } from "jotai";
 import Link from "next/link";
 import { ReactElement } from "react";
 import { NextPageWithLayout } from "../_app";
-import AuthLayout from "@/layouts/Auth";
 
 const Dashboard: NextPageWithLayout = () => {
   const user = useAtomValue(userAtom);
 
   return (
     <div className="p-5 grid grid-cols-1 gap-4">
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <Link href="/">Home</Link>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>Dashboard</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
       <h1 className="text-2xl">Hello {user?.name ?? "..."}</h1>
+      <ThisYearDonationsChart />
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
         <Link
           href="/dashboard/donations"
@@ -56,5 +76,5 @@ const Dashboard: NextPageWithLayout = () => {
 export default Dashboard;
 
 Dashboard.getLayout = (page: ReactElement) => {
-  return <AuthLayout>{page}</AuthLayout>;
+  return <NewAuth>{page}</NewAuth>;
 };

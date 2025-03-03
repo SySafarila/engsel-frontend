@@ -1,11 +1,4 @@
 import GuestMainLayout from "@/components/layouts/GuestMainLayout";
-import axios, { AxiosError } from "axios";
-import { useRouter } from "next/router";
-import { ReactElement, useState } from "react";
-import { useForm } from "react-hook-form";
-import Swal from "sweetalert2";
-import { NextPageWithLayout } from "../_app";
-import { Button } from "@/components/ui/button";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -14,6 +7,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -22,21 +16,21 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import axios, { AxiosError } from "axios";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { ReactElement, useState } from "react";
+import { useForm } from "react-hook-form";
+import Swal from "sweetalert2";
+import { NextPageWithLayout } from "../_app";
 
 const Register: NextPageWithLayout = () => {
   const [isSending, setIsSending] = useState<boolean>(false);
   const router = useRouter();
 
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    getValues,
-    formState: { errors },
-  } = useForm();
+  const { register, handleSubmit, setValue, getValues } = useForm();
 
   const onSubmit = async (data: {
     email?: string;

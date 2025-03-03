@@ -1,5 +1,5 @@
 import BasicOverlay from "@/components/overlays/Basic";
-import AuthLayout from "@/layouts/Auth";
+import NewAuth from "@/layouts/NewAuth";
 import { NextPageWithLayout } from "@/pages/_app";
 import BasicOverlayUtil from "@/utils/BasicOverlayUtil";
 import { userAtom } from "@/utils/state";
@@ -192,5 +192,5 @@ const BasicOverlaySetting: NextPageWithLayout = () => {
 export default BasicOverlaySetting;
 
 BasicOverlaySetting.getLayout = (page: ReactElement) => {
-  return <AuthLayout>{page}</AuthLayout>;
+  return <NewAuth>{page}</NewAuth>;
 };

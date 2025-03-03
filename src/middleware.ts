@@ -12,10 +12,10 @@ export const middleware = async (request: NextRequest) => {
       const jwt = authCookie.value;
 
       await jose.jwtVerify(jwt, secret);
-    } catch (error: unknown) {
-      if (error instanceof jose.jwtVerify) {
-        console.error("JWT Verification Error: ", error);
-      }
+    } catch {
+      // if (error instanceof jose.jwtVerify) {
+      //   console.error("JWT Verification Error: ", error);
+      // }
 
       if (request.nextUrl.pathname.startsWith("/api")) {
         const response = NextResponse.json(

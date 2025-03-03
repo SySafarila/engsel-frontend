@@ -1,4 +1,4 @@
-import AuthLayout from "@/layouts/Auth";
+import NewAuth from "@/layouts/NewAuth";
 import { NextPageWithLayout } from "@/pages/_app";
 import axios, { AxiosError } from "axios";
 import { ReactElement, useEffect, useState } from "react";
@@ -106,5 +106,5 @@ const Account: NextPageWithLayout = () => {
 export default Account;
 
 Account.getLayout = (page: ReactElement) => {
-  return <AuthLayout>{page}</AuthLayout>;
+  return <NewAuth>{page}</NewAuth>;
 };

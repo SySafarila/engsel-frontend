@@ -1,6 +1,6 @@
 import BasicOverlay from "@/components/overlays/Basic";
 import F1Radio from "@/components/overlays/F1Radio";
-import AuthLayout from "@/layouts/Auth";
+import NewAuth from "@/layouts/NewAuth";
 import { NextPageWithLayout } from "@/pages/_app";
 import { userAtom } from "@/utils/state";
 import axios, { AxiosError } from "axios";
@@ -155,5 +155,5 @@ const Overlay: NextPageWithLayout = () => {
 export default Overlay;
 
 Overlay.getLayout = (page: ReactElement) => {
-  return <AuthLayout>{page}</AuthLayout>;
+  return <NewAuth>{page}</NewAuth>;
 };

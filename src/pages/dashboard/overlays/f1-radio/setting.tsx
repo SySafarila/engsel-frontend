@@ -1,5 +1,5 @@
 import F1Radio from "@/components/overlays/F1Radio";
-import AuthLayout from "@/layouts/Auth";
+import NewAuth from "@/layouts/NewAuth";
 import { NextPageWithLayout } from "@/pages/_app";
 import F1RadioOverlayUtil from "@/utils/F1RadioOverlayUtil";
 import { userAtom } from "@/utils/state";
@@ -190,5 +190,5 @@ const BasicOverlaySetting: NextPageWithLayout = () => {
 export default BasicOverlaySetting;
 
 BasicOverlaySetting.getLayout = (page: ReactElement) => {
-  return <AuthLayout>{page}</AuthLayout>;
+  return <NewAuth>{page}</NewAuth>;
 };

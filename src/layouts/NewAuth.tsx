@@ -1,4 +1,5 @@
 import { SidebarApp } from "@/components/SidebarApp";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { logout } from "@/utils/logout";
 import { isAuthAtom, userAtom } from "@/utils/state";
@@ -57,7 +58,24 @@ export default function NewAuth({ children }: { children: React.ReactNode }) {
     <SidebarProvider>
       <SidebarApp />
       <main className="w-full">
-        <SidebarTrigger />
+        <div className="flex items-center pl-3 pt-3">
+          <SidebarTrigger />
+          <Breadcrumb className="ml-3">
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink href="/">Home</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbLink href="/components">Components</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbPage>Breadcrumb</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+        </div>
         {children}
       </main>
     </SidebarProvider>

@@ -1,3 +1,11 @@
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import NewAuth from "@/layouts/NewAuth";
 import { NextPageWithLayout } from "@/pages/_app";
 import formatDate from "@/utils/formatDate";
@@ -84,33 +92,38 @@ const Donations: NextPageWithLayout = () => {
       {!isLoading && donations.length > 0 && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {donations.map((donation, key) => (
-            <div key={key} className="bg-gray-100 p-3 border">
-              <div className="flex justify-between gap-2">
-                <p className="w-full break-all">
-                  Dari: {donation.donator_name}
-                </p>
-                <small
-                  className="cursor-pointer hover:underline text-blue-500"
+            <Card key={key}>
+              <CardHeader>
+                <CardTitle>{donation.donator_name ?? "-"}</CardTitle>
+                <CardDescription>
+                  {donation.donator_email ?? "-"}
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="grid">
+                <p>&quot;{donation.message}&quot;</p>
+                <small className="text-muted-foreground">
+                  {formatDate(donation.updated_at)}
+                </small>
+                <Button
+                  className="mt-4"
+                  variant={"outline"}
                   onClick={() => replayDonation(donation.id)}
                 >
                   Replay
-                </small>
-              </div>
-              <small>Email: {donation.donator_email ?? "-"}</small>
-              <p>Rp {formatRupiah(donation.amount)}</p>
-              <p>&quot;{donation.message}&quot;</p>
-              <small>{formatDate(donation.updated_at)}</small>
-            </div>
+                </Button>
+              </CardContent>
+            </Card>
           ))}
-          <Link
-            href={`/dashboard/donations?cursor=${
-              donations[donations.length - 1].id
-            }`}
-            scroll={false}
-            className="bg-gray-100 md:col-span-2 text-center py-2 border hover:bg-gray-200"
-          >
-            More
-          </Link>
+          <Button className="md:col-span-2" asChild>
+            <Link
+              href={`/dashboard/donations?cursor=${
+                donations[donations.length - 1].id
+              }`}
+              scroll={false}
+            >
+              More
+            </Link>
+          </Button>
         </div>
       )}
       {!isLoading && donations.length == 0 && <p>Tidak ada data</p>}

@@ -101,6 +101,7 @@ const Donations: NextPageWithLayout = () => {
               </CardHeader>
               <CardContent className="grid">
                 <p>&quot;{donation.message}&quot;</p>
+                <p>Rp {formatRupiah(donation.amount)}</p>
                 <small className="text-muted-foreground">
                   {formatDate(donation.updated_at)}
                 </small>

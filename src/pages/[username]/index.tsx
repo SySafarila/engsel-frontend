@@ -9,6 +9,27 @@ import { useForm } from "react-hook-form";
 import { io } from "socket.io-client";
 import Swal from "sweetalert2";
 import { NextPageWithLayout } from "../_app";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 
 type User = {
   id: string;
@@ -36,7 +57,7 @@ const User: NextPageWithLayout<{ user: User; minTts: number }> = ({
   user,
   minTts,
 }) => {
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, setValue } = useForm();
   const [isSending, setIsSending] = useState<boolean>(false);
   const [latestDonation, setLatestDonation] = useState<Donation | null>(null);
   const router = useRouter();
@@ -101,89 +122,87 @@ const User: NextPageWithLayout<{ user: User; minTts: number }> = ({
     }
   };
 
+  const handlePaymentMethodSelect = (value: string) => {
+    setValue("payment_method", value);
+  };
+
   return (
-    <div className="p-5">
-      <p className="text-center font-bold text-2xl mb-4">
-        Send donation to {user.username}
-      </p>
+    <div className="p-5 grid grid-cols-1 gap-4">
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/">Beranda</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>{user.name}</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
       <form
         className="grid grid-cols-1 md:grid-cols-2 gap-3"
         onSubmit={handleSubmit(sendDonation)}
       >
-        <div className="grid grid-cols-1 gap-1 md:col-span-2">
-          <label htmlFor="amount">Nominal (Rp)</label>
-          <input
-            required
-            type="number"
-            className="border py-2 px-3"
+        <div className="flex flex-col space-y-1.5 md:col-span-2">
+          <Label htmlFor="amount">Nominal (Rp)</Label>
+          <Input
             id="amount"
+            type="number"
             placeholder="Nominal"
             {...register("amount", { required: true })}
           />
           <small>Minimal Rp {formatRupiah(minTts)} untuk Text-To-Speech</small>
         </div>
-        <div className="grid grid-cols-1 gap-1">
-          <label htmlFor="donator_name">Nama Pengirim</label>
-          <input
-            required
-            type="text"
-            className="border py-2 px-3"
+        <div className="flex flex-col space-y-1.5">
+          <Label htmlFor="donator_name">Nama</Label>
+          <Input
             id="donator_name"
-            placeholder="Dari Syahrul"
+            type="text"
+            placeholder="Nama kamu"
             {...register("donator_name", { required: true })}
           />
         </div>
-        <div className="grid grid-cols-1 gap-1">
-          <label htmlFor="donator_email">Email Pengirim</label>
-          <input
-            required
-            type="email"
-            className="border py-2 px-3"
+        <div className="flex flex-col space-y-1.5">
+          <Label htmlFor="donator_email">Email</Label>
+          <Input
             id="donator_email"
-            placeholder="mail@mail.com"
+            type="email"
+            placeholder="Nama kamu"
             {...register("donator_email", { required: true })}
           />
         </div>
-        <div className="grid grid-cols-1 gap-1 md:col-span-2">
-          <label htmlFor="message">Pesan</label>
-          <textarea
+        <div className="flex flex-col space-y-1.5 md:col-span-2">
+          <Label htmlFor="message">Pesan</Label>
+          <Textarea
             id="message"
             placeholder="Pesan"
-            className="border py-2 px-3"
             {...register("message", { required: true })}
-          ></textarea>
+          />
         </div>
-        <div className="grid grid-cols-1 gap-1 md:col-span-2">
-          <label htmlFor="payment_method">Metode Pembayaran</label>
-          <div className="flex items-center gap-2">
-            <input
-              required
-              type="radio"
-              id="payment_method_qris"
-              value="qris"
-              {...register("payment_method", { required: true })}
-            />
-            <label htmlFor="payment_method_qris">QRIS</label>
-          </div>
-          <div className="flex items-center gap-2">
-            <input
-              required
-              type="radio"
-              id="payment_method_bca_va"
-              value="bca-virtual-account"
-              {...register("payment_method", { required: true })}
-            />
-            <label htmlFor="payment_method_bca_va">BCA Virtual Account</label>
-          </div>
+        <div className="flex flex-col space-y-1.5 md:col-span-2">
+          <Label htmlFor="payment_method">Metode Pembayaran</Label>
+          <Select onValueChange={handlePaymentMethodSelect} required>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Pilih metode pembayaran" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>General</SelectLabel>
+                <SelectItem value="qris">QRIS</SelectItem>
+              </SelectGroup>
+              <SelectGroup>
+                <SelectLabel>Virtual Account</SelectLabel>
+                <SelectItem value="bca-virtual-account" disabled>
+                  BCA
+                </SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </div>
         <div>
-          <button
-            className="bg-green-500 hover:bg-green-600 px-3 py-2 text-white disabled:bg-gray-200 disabled:text-black"
-            type="submit"
-            disabled={isSending}
-          >
+          <Button type="submit" disabled={isSending}>
             {isSending ? "Loading..." : "Kirim"}
-          </button>
+          </Button>
         </div>
       </form>
       <div className="mt-3">

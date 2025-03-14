@@ -1,5 +1,6 @@
 import BasicOverlay from "@/components/overlays/Basic";
 import F1Radio from "@/components/overlays/F1Radio";
+import { Button } from "@/components/ui/button";
 import NewAuth from "@/layouts/NewAuth";
 import { NextPageWithLayout } from "@/pages/_app";
 import { userAtom } from "@/utils/state";
@@ -70,37 +71,33 @@ const Overlay: NextPageWithLayout = () => {
             <p>Overlay Basic</p>
             <BasicOverlay isPreview={true} />
             <div className="grid grid-cols-3 gap-1">
-              <button
+              <Button
                 type="button"
-                className="bg-yellow-400 hover:bg-yellow-500 py-2"
                 onClick={() =>
                   copyOverlay(`${origin}/overlays/basic?streamkey=${user?.id}`)
                 }
               >
                 Copy Link
-              </button>
-              <a
-                href={`${origin}/overlays/basic?streamkey=${user?.id}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-yellow-400 hover:bg-yellow-500 text-center py-2"
-              >
-                Buka Tab Baru
-              </a>
-              <button
-                type="button"
-                className="bg-yellow-400 hover:bg-yellow-500 py-2"
-                onClick={testDonation}
-              >
+              </Button>
+              <Button asChild>
+                <a
+                  href={`${origin}/overlays/basic?streamkey=${user?.id}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Buka Tab Baru
+                </a>
+              </Button>
+              <Button type="button" onClick={testDonation}>
                 Test
-              </button>
-              <button
+              </Button>
+              <Button
                 type="button"
-                className="bg-yellow-400 hover:bg-yellow-500 py-2 col-span-3"
                 onClick={() => router.push("/dashboard/overlays/basic/setting")}
+                className="col-span-3"
               >
                 Pengaturan
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -109,9 +106,8 @@ const Overlay: NextPageWithLayout = () => {
             <p>Formula 1 Radio</p>
             <F1Radio isPreview={true} />
             <div className="grid grid-cols-3 gap-1">
-              <button
+              <Button
                 type="button"
-                className="bg-yellow-400 hover:bg-yellow-500 py-2"
                 onClick={() =>
                   copyOverlay(
                     `${origin}/overlays/f1-radio?streamkey=${user?.id}`
@@ -119,31 +115,28 @@ const Overlay: NextPageWithLayout = () => {
                 }
               >
                 Copy Link
-              </button>
-              <a
-                href={`${origin}/overlays/f1-radio?streamkey=${user?.id}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-yellow-400 hover:bg-yellow-500 text-center py-2"
-              >
-                Buka Tab Baru
-              </a>
-              <button
-                type="button"
-                className="bg-yellow-400 hover:bg-yellow-500 py-2"
-                onClick={testDonation}
-              >
+              </Button>
+              <Button asChild>
+                <a
+                  href={`${origin}/overlays/f1-radio?streamkey=${user?.id}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Buka Tab Baru
+                </a>
+              </Button>
+              <Button type="button" onClick={testDonation}>
                 Test
-              </button>
-              <button
+              </Button>
+              <Button
                 type="button"
-                className="bg-yellow-400 hover:bg-yellow-500 py-2 col-span-3"
+                className="col-span-3"
                 onClick={() =>
                   router.push("/dashboard/overlays/f1-radio/setting")
                 }
               >
                 Pengaturan
-              </button>
+              </Button>
             </div>
           </div>
         </div>

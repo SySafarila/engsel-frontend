@@ -192,7 +192,7 @@ const User: NextPageWithLayout<{ user: User; minTts: number }> = ({
               </SelectGroup>
               <SelectGroup>
                 <SelectLabel>Virtual Account</SelectLabel>
-                <SelectItem value="bca-virtual-account" disabled>
+                <SelectItem value="bca-virtual-account">
                   BCA
                 </SelectItem>
               </SelectGroup>

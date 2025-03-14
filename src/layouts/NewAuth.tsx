@@ -1,6 +1,14 @@
 import { SidebarApp } from "@/components/SidebarApp";
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { Toaster } from "@/components/ui/sonner";
 import { logout } from "@/utils/logout";
 import { isAuthAtom, userAtom } from "@/utils/state";
 import axios, { AxiosError } from "axios";
@@ -78,6 +86,7 @@ export default function NewAuth({ children }: { children: React.ReactNode }) {
         </div>
         {children}
       </main>
+      <Toaster />
     </SidebarProvider>
   );
 }

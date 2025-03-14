@@ -15,6 +15,7 @@ import axios, { AxiosError } from "axios";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { ReactElement, useEffect, useState } from "react";
+import { toast } from "sonner";
 import Swal from "sweetalert2";
 
 const Donations: NextPageWithLayout = () => {
@@ -70,9 +71,21 @@ const Donations: NextPageWithLayout = () => {
         }
       );
 
-      Swal.fire({
-        icon: "success",
-        title: "Sukses!",
+      const t = toast("Sukses", {
+        description: (
+          <span
+            className="text-muted-foreground"
+            onClick={() => toast.dismiss(t)}
+          >
+            Donasi kembali ditampilkan!
+          </span>
+        ),
+        duration: 5000,
+        action: (
+          <Button className="ml-auto" onClick={() => toast.dismiss(t)}>
+            Ok
+          </Button>
+        ),
       });
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -89,22 +102,25 @@ const Donations: NextPageWithLayout = () => {
     <div className="p-5 grid grid-cols-1 gap-4">
       <h1 className="text-2xl">Donasi & Dukungan</h1>
       {isLoading && <p>Loading...</p>}
+      {!isLoading && donations.length == 0 && <p>Tidak ada data</p>}
       {!isLoading && donations.length > 0 && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {donations.map((donation, key) => (
             <Card key={key}>
-              <CardHeader>
-                <CardTitle>{donation.donator_name ?? "-"}</CardTitle>
+              <CardHeader className="pb-0">
+                <div className="flex items-start justify-between">
+                  <CardTitle>{donation.donator_name ?? "-"}</CardTitle>
+                  <span className="text-muted-foreground text-nowrap -mt-1">
+                    {formatDate(donation.updated_at)}
+                  </span>
+                </div>
+                <CardTitle>Rp {formatRupiah(donation.amount)}</CardTitle>
                 <CardDescription>
                   {donation.donator_email ?? "-"}
                 </CardDescription>
               </CardHeader>
-              <CardContent className="grid">
+              <CardContent className="grid mt-3">
                 <p>&quot;{donation.message}&quot;</p>
-                <p>Rp {formatRupiah(donation.amount)}</p>
-                <small className="text-muted-foreground">
-                  {formatDate(donation.updated_at)}
-                </small>
                 <Button
                   className="mt-4"
                   variant={"outline"}
@@ -127,7 +143,6 @@ const Donations: NextPageWithLayout = () => {
           </Button>
         </div>
       )}
-      {!isLoading && donations.length == 0 && <p>Tidak ada data</p>}
     </div>
   );
 };
